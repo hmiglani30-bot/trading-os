@@ -1,58 +1,75 @@
-# P04 — Security Research Note
+# P04 — Security Fundamental Research Note
 
 ## Purpose
 
-Create an on-demand company or ticker research note using primary sources first, then dashboards and commentary as supporting context.
+Create an equity research note for a company or ticker using filings and company materials first. The goal is to understand business quality, drivers, valuation context, risks, and variant perception.
 
 ## Required inputs
 
-- Name or ticker.
+- Ticker/company.
 - Research question.
 - Time horizon.
-- User-provided notes or files, if any.
+- Current position/watchlist status if provided.
+- User notes/files if available.
 
 ## Source checklist
 
-1. Company investor relations page.
-2. Latest annual and quarterly filings.
-3. Latest earnings release and transcript, if available.
-4. Revenue, margin, cash flow, balance sheet, and guidance context.
-5. Peer or sector context when useful.
-6. News only for recent developments and narrative context.
+1. Company investor relations.
+2. Latest annual and quarterly filings or equivalent disclosures.
+3. Latest earnings release and transcript.
+4. Segment data, revenue drivers, margins, cash flow, balance sheet.
+5. Guidance and management commentary.
+6. Peer or sector context.
+7. Recent news only after primary facts are established.
 
 ## Output format
 
 ```markdown
-# Security Research Note — <Name/Ticker>
+# Security Fundamental Research Note — <Ticker>
 
 ## 1. Research Question
 
-## 2. Business Snapshot
+## 2. Business Model
+How the company makes money, key segments, customer base, and unit economics if available.
 
 ## 3. Key Drivers
-| Driver | Evidence | What to monitor |
-|---|---|---|
-
-## 4. Financial Quality
-- Revenue trend:
-- Margin trend:
-- Cash flow:
-- Balance sheet:
-- Guidance / outlook:
-
-## 5. Valuation Context
-
-## 6. Bull / Base / Bear Framing
-| Case | What has to be true | Evidence | What would weaken it |
+| Driver | Evidence | Direction | What to monitor |
 |---|---|---|---|
 
-## 7. Recent Developments
+## 4. Financial Quality
+- Revenue growth:
+- Gross/operating margin:
+- Free cash flow:
+- Balance sheet:
+- Dilution/buybacks:
+- Capital intensity:
+- Debt/credit considerations:
 
-## 8. Open Questions
+## 5. Management and Guidance
+Summarize guidance, tone, execution record, and credibility.
 
-## 9. Sources Used
+## 6. Competitive Position
+Moat, competitive threats, pricing power, switching costs, regulation, and cyclicality.
 
-## 10. Missing Data
+## 7. Valuation Context
+Multiples, growth-adjusted context, peer comparison, historical context if available. State limitations.
+
+## 8. Variant Perception
+What would the market need to be wrong about for this to be interesting?
+
+## 9. Bull / Base / Bear Case
+| Case | What must be true | Evidence | What breaks it |
+|---|---|---|---|
+
+## 10. Key Risks
+
+## 11. Open Questions
+
+## 12. Sources Used
+
+## 13. Missing Data
+
+## 14. Readiness Score
 ```
 
 ## Quality checks
@@ -60,3 +77,4 @@ Create an on-demand company or ticker research note using primary sources first,
 - Prefer filings and company materials for core facts.
 - Do not use headlines as substitutes for filings.
 - Clearly label assumptions and estimates.
+- Include balance sheet and capital structure, not just growth narrative.

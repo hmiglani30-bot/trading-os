@@ -1,56 +1,79 @@
-# P01 — Daily Context Brief
+# P01 — Daily Market and Portfolio Context Brief
 
 ## Purpose
 
-Produce a short daily research brief that summarizes scheduled events, broad market context, and items that need follow-up.
+Produce a short daily report that answers: what is scheduled, what changed, what market regime appears to be in place, and what should be watched in relation to the user's watchlist or portfolio context.
 
 ## Required inputs
 
 - Date and timezone.
-- Watchlist or research themes, if provided.
-- Any user-provided notes or snapshots.
+- Watchlist and/or holdings snapshot, if available.
+- Open overlays or notable exposures, if available.
+- Prior report, if available.
+- User focus: risk review, opportunity scan, earnings, macro, options overlay, or general context.
 
 ## Source checklist
 
-1. Public economic calendar.
-2. Broad index and sector context.
-3. Rates and volatility context.
-4. Major news related to provided themes.
-5. User-provided notes, if any.
+Check only sources needed for the report:
+
+1. Official economic calendar for today and tomorrow.
+2. Fed/FOMC calendar if relevant.
+3. Broad index movement: SPY, QQQ, IWM or equivalents.
+4. Rates: 2Y, 10Y, and curve direction if available.
+5. Volatility: VIX and major volatility change.
+6. Sector/industry heatmap or dashboard.
+7. Market breadth if available.
+8. Major news affecting user-provided names.
+9. Earnings or event dates for user-provided names.
 
 ## Output format
 
 ```markdown
-# Daily Context Brief — YYYY-MM-DD
+# Daily Market and Portfolio Context Brief — YYYY-MM-DD
 
 ## 1. Read First
-- Overall context:
+- Regime: <risk-on / risk-off / mixed / event-risk / rates-driven / earnings-driven / unclear>
 - Top scheduled event:
-- Top watch item:
+- Top market driver:
+- Top watchlist/portfolio implication:
 - Main uncertainty:
+- Confidence:
 
-## 2. What Changed
+## 2. Scheduled Events
+| Time | Event | Official source? | Why it matters | Names/themes affected |
+|---|---|---:|---|---|
 
-## 3. Scheduled Events
-| Time | Event | Why it matters | Evidence |
-|---|---|---|---|
+## 3. Overnight / Prior-Session Change
+Summarize index, sector, rates, volatility, and major news changes.
 
-## 4. Broad Context
+## 4. Market Internals
+- Rates:
+- Volatility:
+- Breadth:
+- Sector leadership:
+- Risk appetite:
+- Liquidity/credit notes if available:
 
-## 5. Watchlist Relevance
-| Item | Why it matters | Evidence | Missing data |
-|---|---|---|---|
+## 5. Watchlist / Portfolio Relevance
+| Name/theme | Relevant driver | Evidence | What to watch | Missing data |
+|---|---|---|---|---|
 
-## 6. Follow-up Checklist
+## 6. Today's Research Guardrails
+- Do not overinterpret:
+- Requires confirmation:
+- Good candidates for deeper research:
+- Events to wait for:
 
-## 7. Sources Used
+## 7. Missing Data
 
-## 8. Missing Data
+## 8. Sources Used
+
+## 9. Readiness Score
 ```
 
 ## Quality checks
 
-- Keep it concise.
-- Separate facts from interpretation.
-- Mark uncertainty clearly.
-- Do not provide order instructions or account actions.
+- Keep the brief readable in under three minutes.
+- Do not turn every headline into a conclusion.
+- Connect market context to the user's supplied watchlist or portfolio context.
+- Mark missing data clearly.

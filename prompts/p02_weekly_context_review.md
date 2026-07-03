@@ -1,59 +1,76 @@
-# P02 — Weekly Context Review
+# P02 — Weekly Macro, Rates, and Risk Regime Review
 
 ## Purpose
 
-Create a weekly research note that summarizes the macro calendar, broad market backdrop, exposure themes, and follow-up questions for the week ahead.
+Produce a weekly regime report from the perspective of a macro analyst, equity strategist, and rates/credit observer. The goal is to understand the environment for the week ahead, not to predict every move.
 
 ## Required inputs
 
-- Current date.
-- User watchlist or holdings summary, if provided.
-- Recent closed activity notes, if provided.
-- Upcoming known events.
+- Week start date.
+- User watchlist or holdings summary.
+- Prior weekly report, if available.
+- Recent research or activity notes, if available.
 
 ## Source checklist
 
-1. Economic calendar for the next five trading days.
-2. Federal Reserve and rates context.
-3. Inflation, labor, GDP, and liquidity-related releases if scheduled.
-4. Broad index, sector, volatility, and breadth context.
-5. Earnings or company-event dates for user-provided names.
+1. Official economic release calendar.
+2. Federal Reserve calendar and relevant speeches.
+3. Inflation, labor, GDP, retail sales, ISM, housing, and consumer data if scheduled.
+4. Treasury yields and curve direction.
+5. Fed expectations if available.
+6. Dollar, oil, credit spreads, or liquidity indicators if available.
+7. Equity index, sector, volatility, and breadth context.
+8. Earnings/event calendar for user-provided names.
 
 ## Output format
 
 ```markdown
-# Weekly Context Review — Week of YYYY-MM-DD
+# Weekly Macro, Rates, and Risk Regime Review — Week of YYYY-MM-DD
 
 ## 1. Executive Summary
+Classify the week: macro-heavy, earnings-heavy, rates-driven, liquidity-sensitive, quiet, or event-risk.
 
-## 2. Calendar Risk
-| Date | Event | Source | Why it matters | Names/themes affected |
+## 2. Calendar Map
+| Date | Event | Source | Market relevance | User names/themes affected |
 |---|---|---|---|---|
 
-## 3. Broad Market Backdrop
-- Rates:
-- Volatility:
+## 3. Rates and Liquidity Lens
+- 2Y yield:
+- 10Y yield:
+- Curve:
+- Fed expectations:
+- Dollar:
+- Credit/liquidity notes:
+- Interpretation:
+
+## 4. Equity Risk Lens
+- Index trend:
 - Sector leadership:
 - Breadth:
-- Sentiment if available:
+- Volatility:
+- Sentiment/positioning if available:
 
-## 4. Exposure Themes
-| Theme | Evidence | What to watch | Missing data |
+## 5. Portfolio / Watchlist Exposure
+| Exposure | Macro sensitivity | Evidence | Watch item |
 |---|---|---|---|
 
-## 5. Scenario Map
-| Scenario | Trigger | Likely areas affected | What would confirm |
-|---|---|---|---|
+## 6. Scenario Map
+| Scenario | Trigger | Likely market interpretation | What confirms | What weakens |
+|---|---|---|---|---|
 
-## 6. Weekly Follow-up Checklist
-
-## 7. Sources Used
+## 7. Weekly Research Priorities
+Top 3–5 items only.
 
 ## 8. Missing Data
+
+## 9. Sources Used
+
+## 10. Readiness Score
 ```
 
 ## Quality checks
 
-- Do not overfit a single data point.
-- Mark which items are scheduled versus speculative.
-- Use official sources for event dates when possible.
+- Do not overfit a single release or indicator.
+- Mark scheduled facts separately from expectations.
+- Use official sources for dates and releases when possible.
+- Include the rates lens even when the user asks only about equities.

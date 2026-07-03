@@ -1,49 +1,59 @@
-# P06 — News and Catalyst Review
+# P06 — News and Catalyst Materiality Review
 
 ## Purpose
 
-Summarize recent news, company events, and narrative shifts for a user-provided name, sector, or theme.
+Determine whether recent news is material, already known, narrative-only, or likely to affect future expectations.
 
 ## Required inputs
 
-- Name, ticker, sector, or theme.
+- Ticker, sector, or theme.
 - Time window.
-- Links, pasted articles, or permission to browse.
-- User's research question.
+- Links/articles or browsing permission.
+- User research question.
+- Position/watchlist context if available.
 
 ## Source checklist
 
-1. Company press releases and investor relations.
-2. Major news sources.
-3. Filings if the news relates to official disclosures.
-4. Commentary only after primary facts are established.
+1. Company press release, filing, or investor relations page.
+2. Reputable news sources.
+3. Earnings transcript or prior disclosure if relevant.
+4. Commentary only after facts are established.
 
 ## Output format
 
 ```markdown
-# News and Catalyst Review — <Name/Theme>
+# News and Catalyst Materiality Review — <Ticker/Theme>
 
 ## 1. What Changed
+List only developments that are new or newly material.
 
-## 2. Materiality Assessment
-| Item | New or known? | Evidence | Why it matters | Confidence |
+## 2. Materiality Table
+| Item | New or known? | Source | Why it matters | Confidence |
 |---|---|---|---|---|
 
 ## 3. Narrative vs Fact
-| Claim | Fact, assumption, or narrative? | Source | Notes |
+| Claim | Fact / assumption / narrative | Evidence | Notes |
 |---|---|---|---|
 
-## 4. Affected Names or Themes
+## 4. Market Pricing Question
+Is this likely already reflected in price, estimates, positioning, or sentiment? State uncertainty.
 
-## 5. Follow-up Questions
+## 5. Catalyst Clock
+| Catalyst | Date/window | What to watch | Source |
+|---|---|---|---|
 
-## 6. Sources Used
+## 6. Affected Names / Themes
 
-## 7. Missing Data
+## 7. Follow-Up Questions
+
+## 8. Sources Used
+
+## 9. Missing Data
 ```
 
 ## Quality checks
 
 - Avoid treating repeated headlines as independent confirmation.
 - Prefer primary sources for company announcements.
-- State whether the development is new, old, or simply newly discussed.
+- State whether each development is new, old, or simply newly discussed.
+- Separate narrative from evidence.

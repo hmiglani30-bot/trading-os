@@ -1,16 +1,17 @@
-# P09 — Pre-Action Memo
+# P09 — Pre-Action Research Memo
 
 ## Purpose
 
-Create a written memo before a meaningful manual financial action. The memo captures thesis, evidence, assumptions, alternatives, and open questions. It should not execute or instruct orders.
+Create a written memo before a meaningful manual financial action. The memo must document thesis, evidence, risk, alternatives, and missing data. It does not execute or instruct account actions.
 
 ## Required inputs
 
-- Proposed action in the user's own words.
+- Proposed manual action in the user's words.
 - Time horizon.
+- Relevant ticker or theme.
 - Supporting evidence.
-- Relevant portfolio or account context if the user provides it.
-- Maximum acceptable uncertainty or risk notes, if provided.
+- Portfolio context if provided.
+- Risk constraint if provided.
 
 ## Source checklist
 
@@ -18,33 +19,44 @@ Create a written memo before a meaningful manual financial action. The memo capt
 2. Primary sources for company or macro facts.
 3. Dashboard context for market and chart data.
 4. News only for recent developments.
+5. Prior Trading OS reports if available.
 
 ## Output format
 
 ```markdown
-# Pre-Action Memo — <Name/Theme>
+# Pre-Action Research Memo — <Ticker/Theme>
 
 ## 1. Proposed Manual Action
+Restate exactly. Do not add instructions.
 
 ## 2. Thesis
+One paragraph. Include what must be true.
 
 ## 3. Evidence Table
-| Claim | Evidence | Source | Confidence |
+| Claim | Evidence | Source | Confidence | Weakness |
+|---|---|---|---|---|
+
+## 4. Portfolio Context
+How this relates to concentration, correlation, event risk, or existing exposure.
+
+## 5. Scenario Map
+| Scenario | What happens | What confirms | What invalidates |
 |---|---|---|---|
 
-## 4. Assumptions
+## 6. Risk Budget / Sizing Context
+Only discuss if the user provided constraints. Do not invent account values.
 
-## 5. Alternatives Considered
+## 7. Alternatives
+Include “do nothing / wait” as one alternative.
 
-## 6. Invalidation / Reassessment Triggers
+## 8. Reassessment Triggers
+What would require updating the memo?
 
-## 7. Data Gaps
+## 9. Missing Data
 
-## 8. Red-Team Questions
+## 10. Sources Used
 
-## 9. Sources Used
-
-## 10. Process Notes
+## 11. Memo Quality Score
 ```
 
 ## Quality checks
@@ -52,3 +64,4 @@ Create a written memo before a meaningful manual financial action. The memo capt
 - Do not convert a weak thesis into a confident conclusion.
 - Make assumptions explicit.
 - Always include alternatives and data gaps.
+- Include the possibility that no manual action is the best process outcome.

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trading OS Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif; margin: 40px auto; max-width: 980px; line-height: 1.55; color: #111; }
+    h1, h2, h3 { line-height: 1.2; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; vertical-align: top; }
+    th { background: #f6f6f6; }
+    code, pre { background: #f6f6f6; padding: 2px 4px; border-radius: 4px; }
+    pre { padding: 12px; overflow-x: auto; }
+    blockquote { border-left: 4px solid #ddd; padding-left: 12px; color: #444; }
+    .meta { color: #666; font-size: 0.92em; }
+  </style>
+</head>
+<body>
+<h1 id="trading-os-v02-design-report">Trading OS v0.2 Design Report</h1>
+<p><strong>Date:</strong> 2026-07-02<br />
+<strong>Workflow:</strong> os-v0.2-design<br />
+<strong>Scope:</strong> Define how prompts, source selection, outputs, and browser-readable reports work together.</p>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p>The first scaffold was useful as a file structure, but it was not strict enough about prompt quality, source selection, and output storage. Version 0.2 upgrades the system around three principles:</p>
+<ol>
+<li>Prompts must be source-aware.</li>
+<li>Workflows must produce one readable report, not many scattered outputs.</li>
+<li>Every completed run must be saved as Markdown, rendered to HTML, and archived as PDF.</li>
+</ol>
+<h2 id="2-what-changed-in-v02">2. What Changed in v0.2</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>v0.1 issue</th>
+<th>v0.2 fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prompt quality</td>
+<td>Prompts were organized but not strict enough</td>
+<td>Added source-aware prompt contracts and quality checks</td>
+</tr>
+<tr>
+<td>Source usage</td>
+<td>Data-source policy was not central enough</td>
+<td>Added <code>source_registry/source_matrix.md</code></td>
+</tr>
+<tr>
+<td>Output storage</td>
+<td>Output pattern was described but not enforced</td>
+<td>Added <code>runs/</code> convention and renderer</td>
+</tr>
+<tr>
+<td>Browser access</td>
+<td>Needed a way to avoid local download clutter</td>
+<td>Added GitHub Pages publishing workflow</td>
+</tr>
+<tr>
+<td>Review loop</td>
+<td>Improvement loop was conceptual</td>
+<td>Added retrospective and prompt-review module</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-operating-model">3. Operating Model</h2>
+<pre><code class="language-text">user input + source matrix
+  -&gt; prompt module
+  -&gt; workflow report
+  -&gt; runs/YYYY/YYYY-MM-DD/&lt;workflow&gt;/report.md
+  -&gt; generated report.html and report.pdf
+  -&gt; site/index.html browser index
+</code></pre>
+<h2 id="4-report-output-contract">4. Report Output Contract</h2>
+<p>Every workflow should create this folder shape:</p>
+<pre><code class="language-text">runs/YYYY/YYYY-MM-DD/&lt;workflow-name&gt;/report.md
+runs/YYYY/YYYY-MM-DD/&lt;workflow-name&gt;/report.html
+runs/YYYY/YYYY-MM-DD/&lt;workflow-name&gt;/report.pdf
+</code></pre>
+<p><code>report.md</code> is the source of truth. <code>report.html</code> is the browser-readable version. <code>report.pdf</code> is the archive/shareable version.</p>
+<h2 id="5-prompt-modules-added">5. Prompt Modules Added</h2>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P00 Master Report Contract</td>
+<td>Universal report structure and quality bar</td>
+</tr>
+<tr>
+<td>P01 Daily Context Brief</td>
+<td>Daily event/context summary</td>
+</tr>
+<tr>
+<td>P02 Weekly Context Review</td>
+<td>Weekly calendar and broad-context review</td>
+</tr>
+<tr>
+<td>P03 Portfolio Snapshot Review</td>
+<td>User-provided snapshot quality and exposure review</td>
+</tr>
+<tr>
+<td>P04 Security Research Note</td>
+<td>Company/ticker research note</td>
+</tr>
+<tr>
+<td>P05 Chart Context Review</td>
+<td>Chart-context documentation</td>
+</tr>
+<tr>
+<td>P06 News and Catalyst Review</td>
+<td>News/materiality review</td>
+</tr>
+<tr>
+<td>P07 Event Prep</td>
+<td>Scheduled-event preparation</td>
+</tr>
+<tr>
+<td>P08 Options Overlay Scenario Review</td>
+<td>Educational options-scenario review</td>
+</tr>
+<tr>
+<td>P09 Pre-Action Memo</td>
+<td>Written reasoning before meaningful manual action</td>
+</tr>
+<tr>
+<td>P10 Red-Team Review</td>
+<td>Challenge assumptions and missing evidence</td>
+</tr>
+<tr>
+<td>P11 Retrospective and Prompt Review</td>
+<td>Improve prompts after completed cycles</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-source-policy">6. Source Policy</h2>
+<p>The source policy is deliberately tiered:</p>
+<ol>
+<li>Primary or official sources for precise facts.</li>
+<li>Dashboards for scanning and context.</li>
+<li>News and commentary for narrative, not as source-of-truth data.</li>
+</ol>
+<p>Each report must include <code>Sources Used</code> and <code>Missing Data</code> sections.</p>
+<h2 id="7-browser-output-path">7. Browser Output Path</h2>
+<p>After merge, enable GitHub Pages with source set to GitHub Actions. Then run the workflow named <code>Render and publish reports</code>. It will generate the HTML/PDF outputs and publish the browser index.</p>
+<h2 id="8-current-limitations">8. Current Limitations</h2>
+<ul>
+<li>The GitHub connector can create text files, but binary PDF files should be generated by GitHub Actions or locally.</li>
+<li>Some finance-specific wording can trigger connector safety checks, so repo files use research/reporting language and avoid execution instructions.</li>
+<li>This system stores research outputs; it does not automate financial account actions.</li>
+</ul>
+<h2 id="9-next-improvements">9. Next Improvements</h2>
+<ol>
+<li>Add a real daily report using current market sources.</li>
+<li>Add a real weekly review using a sanitized holdings snapshot.</li>
+<li>Add stronger examples for each prompt module.</li>
+<li>Add a prompt changelog and failure log.</li>
+<li>Enable GitHub Pages after merge.</li>
+</ol>
+<h2 id="10-sources-used">10. Sources Used</h2>
+<ul>
+<li>User requirements from this chat.</li>
+<li>Existing Trading OS scaffold design.</li>
+<li>Source-policy approach discussed in prior analysis.</li>
+</ul>
+<h2 id="11-missing-data">11. Missing Data</h2>
+<ul>
+<li>No live portfolio snapshot included in this sample.</li>
+<li>No live source browsing included in this sample design run.</li>
+</ul>
+</body>
+</html>

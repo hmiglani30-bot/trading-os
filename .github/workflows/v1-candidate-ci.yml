@@ -1,0 +1,26 @@
+name: Trading OS v1 candidate CI
+
+on:
+  pull_request:
+    paths:
+      - 'v1/**'
+      - '.github/workflows/v1-candidate-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install -r v1/requirements.txt
+      - name: Compile runtime
+        run: python -m py_compile v1/runtime/run_adaptive.py
+      - name: Run candidate tests
+        run: python -m unittest discover -s v1/tests -v

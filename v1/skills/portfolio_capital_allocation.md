@@ -16,6 +16,12 @@ For personalized allocation: timestamped portfolio snapshot, quantities/weights,
 
 Never infer account balances, sizes, taxes, or constraints. If state is stale, separate what remains valid from what is blocked.
 
+## Required decision output
+
+For a portfolio-and-scout request, the first output must contain: (1) one action for every current holding, (2) a ranked shortlist of new ownership candidates with entry conditions, (3) explicit wait/pass candidates, and (4) an options handoff for eligible shares. State the objective as expected combined stock-and-option wealth over a named horizon, after known costs and with tax uncertainty labeled. Gross premium receipts are not the objective.
+
+Missing exact investable capital blocks exact deployment size, not stock ranking or ownership research. Offer a clearly illustrative per-dollar allocation or staged plan when useful; never invent an approved budget. Run constraints only to determine which proposed action is feasible; do not replace the requested decisions with a generic diagnostic report.
+
 ## Core principles
 
 Capital need not be fully invested. Evaluate the next dollar incrementally. Measure concentration by shared economic drivers, not ticker count. High conviction does not eliminate sizing risk. Ownership quality and covered-call suitability are separate. Low confidence should mean smaller size, tranches, or waiting. Final recommendations must be feasible under real liquidity constraints.
@@ -41,6 +47,10 @@ Use separate dimensions: business/financial quality, valuation/expectations gap,
 ### Rank incremental opportunities
 
 For each candidate state action (buy/add/hold/wait/pass/reduce), role, attractive entry condition, initial/max exposure ranges, tranche plan, funding/cash impact, principal risk, and invalidation. Explain why A is better than B at current prices.
+
+### Resolve the replacement decision
+
+For each new finalist, name the existing holding it beats for incremental capital and explain why at the observed prices. Distinguish new purchases from core holdings that remain worth retaining. A reduction recommendation must state whether it means an immediate sale, a price-triggered sale, or willingness to accept an existing call assignment. Historical cost does not establish forward investment value, but selected-lot instructions govern any assignment-profit claim.
 
 ### Size under uncertainty
 

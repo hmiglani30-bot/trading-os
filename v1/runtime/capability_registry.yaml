@@ -64,7 +64,7 @@ skills:
       OPT.MECHANICS: {section: "Calculate mechanics deterministically", triggers: [precise_strike_or_premium]}
       OPT.COUNTERFACTUAL: {section: "Compare the counterfactuals", triggers: [covered_call_decision]}
       OPT.STRIKE: {section: "Select duration and strike", triggers: [covered_call_decision]}
-      OPT.LOTS: {section: "Distribute across lots", triggers: [multiple_cost_bases, multiple_strikes]}
+      OPT.LOTS: {section: "Distribute across lots", triggers: [covered_call_decision, multiple_cost_bases, multiple_strikes]}
       OPT.ROLL: {section: "Evaluate roll or close decisions", triggers: [existing_call, roll_question]}
       OPT.REDTEAM: {section: "Red-team the recommendation", triggers: [covered_call_decision]}
 
@@ -85,11 +85,11 @@ default_plans:
     then: "rank material changes/opportunities and selectively add ticker-specific capabilities"
     always_check: [PORT.NO_ACTION]
   single_stock_buy_question:
-    start_with: [FUND.EXPECTATIONS, FUND.VALUATION, TECH.TREND, TECH.ASYMMETRY, PORT.CANDIDATE, PORT.NO_ACTION]
-    add_if_needed: [FUND.FINANCIALS, FUND.CATALYSTS, MARKET.TRANSMISSION, PORT.SIZE]
+    start_with: [FUND.FINANCIALS, FUND.EXPECTATIONS, FUND.VALUATION, TECH.TREND, TECH.ASYMMETRY, PORT.CANDIDATE, PORT.NO_ACTION]
+    add_if_needed: [FUND.CATALYSTS, MARKET.TRANSMISSION, PORT.SIZE]
   covered_call_question:
-    start_with: [OPT.OWNERSHIP_GATE, TECH.LEVELS, TECH.OPTIONS_CONTEXT, MARKET.EVENTS, OPT.CHAIN, OPT.MECHANICS, OPT.COUNTERFACTUAL, OPT.STRIKE, OPT.REDTEAM]
-    add_if_needed: [FUND.VALUATION, FUND.CATALYSTS, OPT.LOTS, OPT.ROLL]
+    start_with: [PORT.STATE, OPT.OWNERSHIP_GATE, OPT.LOTS, TECH.LEVELS, TECH.OPTIONS_CONTEXT, MARKET.EVENTS, OPT.CHAIN, OPT.MECHANICS, OPT.COUNTERFACTUAL, OPT.STRIKE, OPT.REDTEAM]
+    add_if_needed: [FUND.VALUATION, FUND.CATALYSTS, OPT.ROLL]
   capital_deployment:
-    start_with: [MARKET.REGIME, MARKET.POSTURE, PORT.STATE, PORT.RISK, FUND.VALUATION, TECH.ASYMMETRY, PORT.RANK, PORT.SIZE, PORT.NO_ACTION]
+    start_with: [MARKET.REGIME, MARKET.POSTURE, PORT.STATE, PORT.RISK, FUND.FINANCIALS, FUND.VALUATION, TECH.ASYMMETRY, PORT.RANK, PORT.SIZE, PORT.NO_ACTION]
     add_if_needed: [FUND.SCENARIOS, MARKET.SCENARIOS, PORT.SCOUT]

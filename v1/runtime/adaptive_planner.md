@@ -183,6 +183,18 @@ Escalate depth when:
 
 ## 9. Synthesis contract
 
+For an explicit portfolio, scout and covered-call request, begin with:
+1. One action for every current holding, including what to sell, retain, or allow assignment to sell.
+2. One ranked purchase queue across existing and new names, with entry conditions and a fixed illustrative deployment plan when actual capital is unspecified.
+3. Actual call comparisons with bid/ask timestamps, contract counts, selected-lot requirements, retained shares after assignment, and no-call alternatives.
+4. The most consequential counterargument and what would change the decision.
+
+Missing sizing inputs must not displace stock research. Missing adjusted lots blocks verified assignment P&L, not all option comparisons. Partial completion must be named accurately: distinguish applying all five libraries from completing full fair-value models, historical replays, live order checks, or an unattended runtime test. Respect the user's requested emphasis and terminology.
+
+Avoid overlapping tranche triggers that accidentally exceed the intended allocation. A proposed entry discipline is not automatically technical support or fair value. Explicitly identify current commitments that conflict with the desired future policy and price a transition when useful.
+
+
+
 The user sees one answer, not stitched module outputs.
 
 Lead with:

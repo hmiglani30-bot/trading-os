@@ -20,7 +20,7 @@ State the data window and last bar. If an indicator/timeframe is absent, mark it
 
 ### Validate the input
 
-State source/timestamp, bar interval, adjusted/unadjusted data, volume availability, session state, missing indicators/timeframes, and whether the data is sufficient for the horizon. An old screenshot cannot support a live strike or entry decision.
+State source/timestamp, bar interval, adjusted/unadjusted data, volume availability, session state, missing indicators/timeframes, and whether the data is sufficient for the horizon. An old screenshot cannot support a live strike or entry decision. Verify the actual date of a provider's official-close field; it may lag the latest timestamped regular-session trade. Keep regular-session and extended-hours references distinct. Remove interpolated pre-listing bars and require at least N genuine observations before calculating an N-period indicator. Handle splits and ADR units before comparing price levels.
 
 ### Classify the multi-timeframe trend
 
@@ -45,6 +45,10 @@ For each scenario provide entry/observation zone, confirmation trigger, invalida
 ### Integrate fundamentals and market regime
 
 Use market/fundamental packets to interpret rather than overwrite the chart. Distinguish a fundamentally attractive but technically weak setup from a technically strong but fundamentally overvalued momentum trade.
+
+### Make the timing decision explicit
+
+Return a usable purchase/observation range, confirmation trigger, invalidation, and the next action if price gaps past the range. Separate valuation entry disciplines from chart support. Identify a preferred staged entry and a no-purchase condition; do not require every candidate to wait indefinitely for an ideal pullback. Indicators derived from the same price series are not independent confirmations.
 
 ### Hand off to portfolio and options
 

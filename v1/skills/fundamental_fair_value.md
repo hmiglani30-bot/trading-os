@@ -42,6 +42,12 @@ Evaluate market structure/growth, competitive advantage, pricing power, switchin
 
 Cover revenue growth by segment, margins, stock-based compensation, FCF/conversion, working capital, capex, debt/cash/liquidity, dilution/convertibles/buybacks/issuance, acquisitions versus organic growth, GAAP/non-GAAP differences, guidance and revisions. For cyclical names distinguish peak from normalized earnings.
 
+### Validate the earnings denominator before ranking
+
+Reconcile reported GAAP earnings, company-adjusted earnings, and recurring operating earnings. Identify investment revaluations, disposal gains, convertible-note charges, tax items, dilution, and stock compensation. An exclusion is not automatically economically irrelevant. Show the reported-to-adjusted bridge when a distortion changes the ranking.
+
+Label every valuation denominator as trailing reported, trailing normalized, company annual guidance, independently sourced consensus, or annualized quarter. Never label quarterly EPS multiplied by four as a forward-year forecast. For memory and other cyclicals, test a materially lower normalized earnings denominator. For infrastructure businesses, distinguish recognized revenue, operating ARR, targeted ARR, contracted backlog, and customer prepayments; reconcile capex and depreciation before treating EBITDA as shareholder cash earnings.
+
 ### Evaluate management and capital allocation
 
 Assess guidance accuracy, strategic consistency, disclosure, incentives, buybacks/dividends/debt/acquisitions/capacity investment, and whether capital allocation creates value.
@@ -60,7 +66,7 @@ Use suitable methods such as forward P/E, EV/EBITDA/EBIT, EV/revenue with margin
 
 ### Build bear, base, and bull cases
 
-Each case contains operating-driver assumptions, margins, cash-flow/earnings, share count/capital structure, multiple/discount rate, fair-value range, probability judgment, catalysts, and thesis breakers. Probabilities sum to 100%; probability-weighted value is only as good as the assumptions.
+Each case contains operating-driver assumptions, margins, cash-flow/earnings, share count/capital structure, multiple/discount rate, fair-value range, catalysts, and thesis breakers. Assign probabilities only when a defensible basis exists; then they must sum to 100%. Otherwise use explicitly unweighted sensitivities and identify the break-even assumptions.
 
 ### Distinguish thesis from catalyst
 
@@ -73,6 +79,10 @@ Score separately long-term ownership quality, current valuation attractiveness, 
 ### Make a clear fundamental conclusion
 
 Choose: `attractive`, `selectively attractive`, `fairly valued`, `expensive but improving`, `priced for perfection`, `unattractive`, or `insufficient evidence`. State price zones/conditions that improve or weaken the conclusion.
+
+## Decision handoff
+
+Begin the handoff with one action: buy, add, keep, wait, reduce, or exit; the horizon; the purchase/exit condition; and the most important reason. Distinguish ownership quality from attractiveness at this price. Compare a finalist with the best existing alternative for the next dollar. Provide a valuation range only when supported; a provisional action with explicit missing estimates is preferable to invented precision. Name the evidence that would reverse the action.
 
 ## Machine-readable packet
 

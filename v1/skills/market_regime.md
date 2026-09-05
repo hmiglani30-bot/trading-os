@@ -48,15 +48,15 @@ Assess price response to good/bad news, analyst revisions, earnings-reaction asy
 
 ### Construct scenarios
 
-Create bear/base/bull market scenarios with probabilities summing to 100%, observable conditions, confirming indicators, invalidating indicators, and watchlist transmission.
+Create bear/base/bull market scenarios with observable conditions, confirming indicators, invalidating indicators, and watchlist transmission. Use explicitly unweighted scenarios unless a defensible probability basis exists; if probabilities are assigned, they must sum to 100%. Unsupported precision must not drive stock selection.
 
 ### Build the event calendar
 
-Include only decision-relevant economic releases, central-bank events, relevant earnings, regulatory/policy events, industry/product events, and positioning events. Use exact dates/timezones and mark uncertainty.
+Include only decision-relevant economic releases, central-bank events, relevant earnings, regulatory/policy events, industry/product events, and positioning events. Use exact dates/timezones and mark uncertainty. Include investor conferences and monthly operating releases when material, not only earnings. Check market holidays, ex-dividend dates and the actual last pre-ex trading session. Distinguish confirmed event, tentative estimate, no dated event found, and no event; an empty calendar proves only the third.
 
 ### Produce a decision implication
 
-Translate the regime into deployment posture, factor preferences, entry style, covered-call aggressiveness, and cash reserve logic. Do not recommend deployment merely because cash exists.
+Translate the regime into deployment posture, factor preferences, entry style, covered-call aggressiveness, and cash reserve logic. Do not recommend deployment merely because cash exists. Give the market conclusion in terms of named purchase, hold, wait, or call decisions. Identify which proposed expiries cross which events and whether to act before or after them. Missing breadth, positioning or rate data limits those claims; it does not block evidence-supported company decisions.
 
 ## Machine-readable packet
 

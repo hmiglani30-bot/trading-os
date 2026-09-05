@@ -18,17 +18,17 @@ Premium is not free return; a call exchanges upside and flexibility for cash and
 
 ## Required inputs
 
-For precision: ticker, share quantity, lot-level cost basis when relevant, underlying price/timestamp, desired ownership quantity, max acceptable assignment, chain timestamp, expirations/strikes/bid/ask/mid, volume/OI, delta/IV when available, earnings/ex-div dates, technical packet, fundamental/portfolio ownership packets, and supplied tax/liquidity constraints. If chain/portfolio state is stale, give a framework/target delta or strike zone rather than fabricated premium.
+For precision: ticker, share quantity, lot-level cost basis when relevant, underlying price/timestamp, desired ownership quantity, max acceptable assignment, chain timestamp, expirations/strikes/bid/ask/mid, volume/OI, delta/IV when available, earnings/ex-div dates, technical packet, fundamental/portfolio ownership packets, and supplied tax/liquidity constraints. For a weekend or holiday dry run, use timestamped last-session bid/ask references, mark every premium as non-executable, and require a refreshed quote before a trade. If quotes are absent, give a strike/condition without fabricated premium.
 
 ## Analysis method
 
 ### Reconfirm the ownership decision
 
-State core shares that should not be called, tactical/excess shares eligible, existing assignment exposure, thesis direction, and catalyst asymmetry. Choose `no calls`, `partial calls`, or `full calls`. No calls is valid.
+State core shares that should not be called, tactical/excess shares eligible, existing assignment exposure, thesis direction, and catalyst asymmetry. Choose `no calls`, `partial calls`, or `full calls`. No calls is valid. Reconcile the planned retained shares under partial and full assignment. If existing calls can sell more shares than the desired retention target allows, show either the priced close/roll needed or an explicit temporary willingness to sell those shares. Do not promise a core holding that existing obligations can remove.
 
 ### Validate the option chain
 
-Check quote timestamp, spread, OI/volume, DTE, delta, IV/term structure when available, earnings/event overlap, ex-dividend risk, corporate actions, and live/delayed/stale status. Reject/downgrade illiquid contracts; do not use an old last trade as executable premium.
+Check quote timestamp, spread, OI/volume, DTE, delta, IV/term structure when available, earnings/event overlap, ex-dividend risk, corporate actions, and live/delayed/stale status. Reject/downgrade illiquid contracts; do not use an old last trade as executable premium. Use the bid as a conservative sell reference and the ask as a conservative close reference, with spread and depth limits. A zero bid is not income; reject unusable spreads. Delta is a model sensitivity and rough assignment proxy, not a validated real-world probability.
 
 ### Calculate mechanics deterministically
 
@@ -44,11 +44,17 @@ Balance assignment tolerance, technical resistance/breakout risk, fair value, ev
 
 ### Distribute across lots
 
-When cost bases differ, ladder by lot basis, supplied tax/holding treatment, willingness to exit, fair value, resistance, liquidity, and total assignment exposure. Contract count must reconcile to eligible shares.
+Load the user's explicit assignment objective before any lot calculation. If they require no stock-only assignment loss, allocate actual adjusted lots with basis at or below each strike, reserve each share once, and apply their realized-gain or tax preference among eligible lots. Never silently substitute average cost or the broker's default disposal method. Without adjusted lot inventory, state the maximum eligible basis and quantity needed as a conditional proposal; neither profit nor loss is verified.
+
+Reconcile deliverables, current short calls, open sell orders, and pending assignments before adding contracts. Shares available for stock sale do not establish uncovered call capacity. Separate broker-reported assignment P&L, a proposed lot-selection scenario, net option lifecycle P&L, and remaining unrealized stock P&L. Check whether assignment proceeds already include option premium before adding it again.
 
 ### Evaluate roll or close decisions
 
-For existing calls distinguish original decision, current thesis, remaining extrinsic value, assignment likelihood, roll debit/credit, new cap/duration, and no-action alternative. A roll is a new trade, not an automatic rescue.
+For existing calls distinguish original decision, current thesis, remaining extrinsic value, assignment likelihood, roll debit/credit, new cap/duration, and no-action alternative. A roll is a new trade, not an automatic rescue. Show both legs, net cash, realized option P&L, the new cap and expiry, and the no-action alternative. Original premium is sunk for the current hold-versus-close decision; do not count it as new income. Accepting assignment is valid when sale at the strike fits the ownership decision and lot constraint.
+
+### Compare total economic outcomes
+
+At a common starting mark, share count, and terminal date, show no call, proposed partial coverage, and a reasonable alternative at several explicit stock-price outcomes. For a new call, option P&L per share is premium minus max(terminal price minus strike, zero). Separate this from stock P&L and selected-lot tax reporting. For existing positions, compare future outcomes from the current option mark; do not present opening credit as profit already earned. Include fees and spread assumptions when known. Do not impose a weekly yield quota that forces unacceptable sale prices or illiquid contracts.
 
 ### Red-team the recommendation
 

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The planner is the intelligence layer between a vague user question and the five canonical Trading OS skill libraries. It must decide **what needs to be investigated before it decides which prompt sections to use**.
+The planner is the intelligence layer between a vague user question and the six canonical Trading OS decision libraries. It must decide **what needs to be investigated before it decides which prompt sections to use**.
 
 The user should be able to say:
 
@@ -11,19 +11,20 @@ The user should be able to say:
 - “What do I do with AMD?”
 - “Should I sell calls this week?”
 - “Anything important changed?”
+- “Run Scout.”
 
 without knowing the internal prompt architecture.
 
 ## Core design rule
 
-The five skill files are **canonical decision libraries, not five mandatory sequential prompts**.
+The six decision files are **canonical libraries, not mandatory sequential essays**. Scout also has a direct, independently runnable entry point.
 
 A run may use:
 
 - one capability from one skill;
 - several capabilities from several skills;
 - most of a skill for a deep dive;
-- all five skills only when the decision genuinely requires them.
+- all six decision libraries only when the decision genuinely requires them.
 
 Do not run a full 2,000-word fundamental analysis merely because the user mentioned a ticker. Do not omit a portfolio or event-risk check merely because the user failed to ask for it.
 
@@ -130,7 +131,7 @@ If an omitted capability could flip the decision, add it and gather the evidence
 
 ## 6. Vague-question mode: “What should I do today?”
 
-Do not run five full prompts across every holding.
+Do not run every full prompt across every holding.
 
 Use this sequence:
 
@@ -147,6 +148,14 @@ I. return one ranked decision brief
 ```
 
 The output should explicitly include a `no_action` result when nothing clears the hurdle.
+
+## Standalone Scout mode
+
+“Run Scout”, “Scout”, or the runner option `--workflow scout` selects the `scout` default plan and loads `v1/skills/scout.md` as the primary prompt. Treat opportunity discovery as a request to source and shortlist investments now, not to write another sourcing plan. Use Scout's full discovery-to-decision pipeline; choose only the relevant specialist capabilities for each serious candidate.
+
+The standalone Scout result starts with ranked new buy/add/wait candidates, then actual search coverage, eight-channel status, a rejection log and an ownership-to-options handoff. It does not require a full review of every current holding unless the user also asks for that. Portfolio state is optional for stock discovery; missing adjusted lots or chains restrict precise option conclusions only.
+
+`PORT.SCOUT` is a legacy alias/handoff to the same prompt. Broad candidate discovery must not be restricted to the configured watchlist. Supported saved-scan evidence can supply one channel, with its true date, rules, returned-row count and limitations. No source access or complete market scan may be claimed merely because the prompt asks for it.
 
 ## 7. Proactive question discovery
 
@@ -183,13 +192,13 @@ Escalate depth when:
 
 ## 9. Synthesis contract
 
-For an explicit portfolio, scout and covered-call request, begin with:
+For a combined portfolio, scout and covered-call request, begin with:
 1. One action for every current holding, including what to sell, retain, or allow assignment to sell.
 2. One ranked purchase queue across existing and new names, with entry conditions and a fixed illustrative deployment plan when actual capital is unspecified.
 3. Actual call comparisons with bid/ask timestamps, contract counts, selected-lot requirements, retained shares after assignment, and no-call alternatives.
 4. The most consequential counterargument and what would change the decision.
 
-Missing sizing inputs must not displace stock research. Missing adjusted lots blocks verified assignment P&L, not all option comparisons. Partial completion must be named accurately: distinguish applying all five libraries from completing full fair-value models, historical replays, live order checks, or an unattended runtime test. Respect the user's requested emphasis and terminology.
+Missing sizing inputs must not displace stock research. Missing adjusted lots blocks verified assignment P&L, not all option comparisons. Partial completion must be named accurately: distinguish applying the selected libraries from completing full fair-value models, historical replays, live order checks, or an unattended runtime test. Respect the user's requested emphasis and terminology.
 
 Avoid overlapping tranche triggers that accidentally exceed the intended allocation. A proposed entry discipline is not automatically technical support or fair value. Explicitly identify current commitments that conflict with the desired future policy and price a transition when useful.
 
@@ -230,10 +239,10 @@ The record should contain a concise rationale, not private chain-of-thought.
 Do not:
 
 - make the user choose the internal prompt;
-- mechanically run all five skills every time;
+- mechanically run all six decision libraries every time;
 - run each skill as a standalone essay and concatenate the results;
 - ignore a material risk because the user did not explicitly ask about it;
-- expand the prompt set when a routing or surfacing problem is the actual failure;
+- duplicate canonical rules across prompt files when a handoff is sufficient;
 - repeat full analysis when only material changes need updating;
 - select call strikes before desired ownership is established;
 - treat “do nothing” as an inferior answer.

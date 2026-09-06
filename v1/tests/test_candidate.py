@@ -1,4 +1,5 @@
 import json
+import importlib.util
 import subprocess
 import sys
 import tempfile
@@ -8,6 +9,9 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+SPEC = importlib.util.spec_from_file_location("run_adaptive", ROOT / "runtime" / "run_adaptive.py")
+RUNTIME = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(RUNTIME)
 
 
 class CandidateTests(unittest.TestCase):
@@ -17,13 +21,60 @@ class CandidateTests(unittest.TestCase):
         for skill_name, skill in registry["skills"].items():
             path = Path(skill["path"])
             self.assertTrue((ROOT.parent / path).exists(), f"missing skill path for {skill_name}: {path}")
-            for capability_id in skill["capabilities"]:
+            headings = {
+                line.lstrip("#").strip()
+                for line in (ROOT.parent / path).read_text(encoding="utf-8").splitlines()
+                if line.startswith("#")
+            }
+            for capability_id, capability in skill["capabilities"].items():
                 self.assertNotIn(capability_id, seen, f"duplicate capability {capability_id}")
+                self.assertIn(capability["section"], headings, f"missing section for {capability_id}")
                 seen.add(capability_id)
         for plan_name, plan in registry.get("default_plans", {}).items():
             for key in ("start_with", "always_check", "add_if_needed"):
                 for capability_id in plan.get(key, []):
                     self.assertIn(capability_id, seen, f"{plan_name} references unknown {capability_id}")
+        scout = registry["entry_points"]["scout"]
+        self.assertEqual(scout["path"], registry["skills"]["scout"]["path"])
+        self.assertIn(scout["default_plan"], registry["default_plans"])
+
+    def test_run_scout_routes_and_loads_evidence_without_portfolio(self):
+        for request in ("Run Scout", " scout ", "Run Scout across unfamiliar sectors"):
+            self.assertEqual(RUNTIME.resolve_workflow(request), "scout")
+        self.assertEqual(RUNTIME.resolve_workflow("Review AMD"), "adaptive")
+        self.assertEqual(RUNTIME.resolve_workflow("Find new stocks", "scout"), "scout")
+        self.assertEqual(RUNTIME.resolve_workflow("Run Scout", "adaptive"), "adaptive")
+        prompt = RUNTIME.build_prompt(
+            ROOT, {}, "Run Scout", None, None, None,
+            scout_evidence={"reported_match_count": 500, "rows_returned": 2, "token": "private-token"},
+        )
+        self.assertIn("Primary prompt: scout.md", prompt)
+        self.assertIn("<SKILL name='scout.md'>", prompt)
+        self.assertIn('"rows_returned": 2', prompt)
+        self.assertIn('"reported_match_count": 500', prompt)
+        self.assertIn("PRIVATE PORTFOLIO INPUT\nUNAVAILABLE", prompt)
+        self.assertNotIn("private-token", prompt)
+
+    def test_scout_cli_selects_scout_and_marks_demo_truthfully(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "runs"
+            evidence = Path(tmp) / "scout.json"
+            evidence.write_text('{"rows_returned": 2}', encoding="utf-8")
+            subprocess.run([
+                sys.executable, str(ROOT / "runtime" / "run_adaptive.py"),
+                "--workflow", "scout", "--scout-evidence-file", str(evidence),
+                "--output-root", str(out), "--demo",
+            ], check=True)
+            latest = out / "latest"
+            manifest = json.loads((latest / "run_manifest.json").read_text())
+            planning = json.loads((latest / "planning_record.json").read_text())
+            self.assertEqual(manifest["request"], "Run Scout")
+            self.assertEqual(manifest["workflow"], "scout")
+            self.assertTrue(manifest["demo"])
+            self.assertTrue(manifest["scout_evidence_supplied"])
+            self.assertFalse(manifest["portfolio_supplied"])
+            self.assertIn("SCOUT.DISCOVER", planning["selected_capabilities"])
+            self.assertIn("zero stocks were screened", (latest / "report.md").read_text())
 
     def test_demo_runner_emits_browser_and_ledger_artifacts(self):
         with tempfile.TemporaryDirectory() as tmp:

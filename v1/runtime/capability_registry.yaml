@@ -7,6 +7,14 @@ principles:
   - Shared market work runs once for multi-stock analysis.
   - Portfolio ownership precedes options overlay.
 
+entry_points:
+  scout:
+    request: "Run Scout"
+    path: v1/skills/scout.md
+    default_plan: scout
+    portfolio_required: false
+    options_required: false
+
 skills:
   market_regime:
     path: v1/skills/market_regime.md
@@ -56,6 +64,18 @@ skills:
       PORT.NO_ACTION: {section: "Make the no-action comparison", triggers: [all_action_decisions]}
       PORT.SCOUT: {section: "Scout mode", triggers: [opportunity_discovery, vague_buy_question]}
 
+  scout:
+    path: v1/skills/scout.md
+    capabilities:
+      SCOUT.UNIVERSE: {section: "Establish the universe", triggers: [scout, opportunity_discovery, vague_buy_question]}
+      SCOUT.SOURCES: {section: "Validate sources and coverage", triggers: [scout, opportunity_discovery]}
+      SCOUT.DISCOVER: {section: "Run eight discovery channels", triggers: [scout, opportunity_discovery]}
+      SCOUT.TRIAGE: {section: "Triage and preserve breadth", triggers: [scout, multi_stock_ranking]}
+      SCOUT.UNDERWRITE: {section: "Underwrite finalists", triggers: [scout, scout_finalist]}
+      SCOUT.DECISION: {section: "Return the investment decision", triggers: [scout, capital_deployment]}
+      SCOUT.OPTIONS_HANDOFF: {section: "Hand off ownership to options", triggers: [scout, covered_call_decision]}
+      SCOUT.AUDIT: {section: "Audit and output contract", triggers: [scout, opportunity_discovery]}
+
   options_covered_calls:
     path: v1/skills/options_covered_calls.md
     capabilities:
@@ -80,6 +100,11 @@ skills:
       LEARN.EVAL: {section: "Evaluate the candidate", triggers: [candidate_change]}
 
 default_plans:
+  scout:
+    start_with: [SCOUT.UNIVERSE, SCOUT.SOURCES, SCOUT.DISCOVER, SCOUT.TRIAGE, SCOUT.UNDERWRITE, SCOUT.DECISION, SCOUT.OPTIONS_HANDOFF, SCOUT.AUDIT]
+    then: "Apply relevant fundamental, technical and shared market capabilities to deep candidates; return actual ranked findings."
+    always_check: [PORT.NO_ACTION]
+    add_if_needed: [FUND.QUALITY, FUND.FINANCIALS, FUND.EXPECTATIONS, FUND.VALUATION, FUND.SCENARIOS, TECH.TREND, TECH.LEVELS, TECH.CONDITIONS, MARKET.REGIME, MARKET.EVENTS, PORT.STATE, PORT.RANK, PORT.SIZE, OPT.OWNERSHIP_GATE, OPT.CHAIN, OPT.LOTS, OPT.COUNTERFACTUAL]
   what_should_i_do_today:
     start_with: [PORT.STATE, MARKET.CHANGE, MARKET.REGIME, MARKET.EVENTS, PORT.RISK, PORT.CASH]
     then: "rank material changes/opportunities and selectively add ticker-specific capabilities"

@@ -1,14 +1,14 @@
-# Skill — Portfolio Risk, Capital Allocation, and Scout
+# Skill — Portfolio Risk and Capital Allocation
 
 ## Mission
 
 Convert stock-level research into a portfolio decision: whether to deploy, which names deserve capital, how much, sequencing/tranches, what remains in cash, and what existing risk the decision adds or reduces.
 
-This skill is also the home of **Scout**, the discovery and ranking mode. Scout is a funnel using the same market, fundamental, technical, portfolio, and options standards—not another mega-prompt.
+The standalone [Scout prompt](scout.md) owns stock discovery and shortlisting. This skill consumes its ranked findings to decide allocation and proceeds. `PORT.SCOUT` remains a compatibility handoff.
 
 ## Modes
 
-`portfolio_review`, `capital_deployment`, `multi_stock_ranking`, `existing_position_review`, `scout`, `morning`, `event_rebalance`.
+`portfolio_review`, `capital_deployment`, `multi_stock_ranking`, `existing_position_review`, `morning`, `event_rebalance`. Legacy `scout` requests route to [scout.md](scout.md).
 
 ## Inputs
 
@@ -62,37 +62,13 @@ Compare deployment with holding cash, adding to an existing highest-conviction p
 
 ## Scout mode
 
-Source integration: the supplied September 5, 2026 wealth playbook, P03 (ownership discovery), P17 (next-dollar and assignment-proceeds allocation), and method steps 3, 4, 6, 8, and 11. The rules below adapt those requirements into this canonical module.
+`PORT.SCOUT` is a compatibility entry point for the standalone [Scout prompt](scout.md). Use that file and the registry's `scout` default plan for the canonical universe, eight discovery channels, breadth targets, evidence gates, shortlist and rejection log. Do not maintain a second Scout algorithm here.
 
-### Define the search and apply gates
-
-Declare the research cutoff, ownership horizon, relevant call horizon, actual universe searched, and data limitations. Use a liquid/researchable core universe plus a smaller discovery lane with explicit inclusion/exclusion rules. Search beyond current holdings and include businesses with different earnings drivers; do not present a review of familiar holdings as a market-wide scan. Keep new names distinguishable from additions to existing positions.
-
-Prefer verifiable cash generation, sustainable funding, understandable competitive strengths, and a valuation with plausible upside. Before scoring, reject candidates that fail business, funding, share liquidity, current disclosure, listing, governance, event, or portfolio-fit gates. Separate an ownership rejection from an options rejection: weak option liquidity can rule out calls while leaving uncovered ownership attractive. Label missing evidence individually; do not fill gaps with assumed numbers.
-
-Reuse the market, fundamental, and technical modules. For survivors, examine what growth and margins the price requires, valuation scenarios, catalysts, downside mechanisms, and entry conditions. Use source-linked assumptions and current prices. Distinguish reported earnings from recurring economics. Include events inside the contemplated ownership and call windows. Do not rank by premium yield or let a score replace the investment case.
-
-### Return a decision, not a ticker list
-
-Return no more than five unique finalists, plus a rejected-candidate log. For each finalist give:
-
-- Rank, buy/add/wait action, proposed ownership role, and why it merits capital at the observed price.
-- Entry range or trigger, staged deployment condition, valuation assumptions, and the principal downside scenario.
-- Evidence that would strengthen or invalidate ownership, the next review event/date, and confidence or missing data.
-- The existing holding or other finalist it beats for incremental capital, with an explicit comparison; retain worthwhile current holdings even when new purchases rank ahead.
-- A separate choice of own without calls, own with selective calls, or defer/reject the overlay, with the reason and the upside that a call would surrender.
-
-The rejected-candidate log must identify each substantively evaluated exclusion, its decisive failed gate or price objection, source/date, and what would allow reconsideration. Distinguish rejected, watchlist, and insufficient-data cases. Report the universe and funnel counts only when actually tracked. Do not invent candidates merely to fill five places.
-
-Return two distinct outputs: the ranked ownership shortlist and the covered-call handoff drawn from ownership-approved candidates. Pass the latter to the options module for fresh two-sided quotes, expiry/event comparison, eligible lots, existing share commitments, and a same-quantity comparison against no call. Attractive ownership does not require immediate call selling.
-
-### Decide how proceeds are used
-
-Compare new purchases with adding to the best retained holding, waiting, and the user's confirmed cash needs and reserves. Do not automatically reinvest premiums or repurchase assigned shares. Rank the next use of capital and state the condition for deployment. Missing exact available capital blocks exact dollar sizing, not the shortlist; use clearly illustrative allocations or conditional tranches. If nothing clears the ownership hurdle, return a watchlist or cash rather than force a buy.
+Return Scout's actual ranked findings to this portfolio module for next-dollar comparisons, personalized allocation, proceeds and existing-holding decisions. Missing portfolio state limits those personalized decisions; it does not block Scout's public-company research. Use the Scout packet unchanged as the discovery record and add portfolio-specific decisions separately.
 
 ## Machine-readable packet
 
-Return as_of/portfolio_cutoff/input_quality/capital_available/risk_posture/portfolio_risks/cash_reserve_range, ranked actions with action/role/score/confidence/allocation/entry/tranche/fit/invalidation, covered_call_handoffs, cash_alternative, missing_data, and source_notes. In scout mode also return searched_universe, ownership_horizon, call_horizon, finalist_count, rejected_candidates (reason/source/as_of/reconsideration_trigger), uncovered_ownership_reason, and next_review for each finalist.
+Return as_of/portfolio_cutoff/input_quality/capital_available/risk_posture/portfolio_risks/cash_reserve_range, ranked actions with action/role/score/confidence/allocation/entry/tranche/fit/invalidation, covered_call_handoffs, cash_alternative, missing_data, and source_notes. When consuming Scout, reference its canonical `scout` packet rather than redefining discovery fields.
 
 ## Failure conditions
 

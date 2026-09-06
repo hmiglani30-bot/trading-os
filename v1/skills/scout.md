@@ -23,7 +23,7 @@ Proposed starting thresholds, to evaluate prospectively rather than present as o
 - **Core:** market capitalization of at least $1 billion and median daily dollar turnover of at least $20 million over the preceding 20 trading sessions.
 - **Smaller-company discovery:** market capitalization of at least $300 million and the same turnover measure of at least $5 million; label this lane separately.
 - Compute turnover from compatible per-session price and share-volume units. Average share volume, a single day's volume and median dollar turnover are different measurements. If the required series is unavailable, mark the liquidity gate unverified; identify any proxy without claiming the threshold passed.
-- Use genuine available history for new listings. Do not invent prelisting bars or require a 200-day average where 200 sessions do not exist. Such a company can still enter fundamental research.
+- Use genuine available history for new listings and spin-offs. Verify the first regular listing date; remove provider-generated interpolated/prelisting records and investigate zero-volume bars before computing indicators. A response containing 255 rows does not establish 255 genuine trading sessions. Report genuine observations used; do not require a 200-day average where 200 sessions do not exist. Such a company can still enter fundamental research.
 - Current profitability, a familiar theme and liquid weekly calls are not universal discovery requirements. Unprofitable businesses require a credible funding and economic path during underwriting.
 
 Report the source snapshot, instrument scope and actual eligible count only if calculated. If a complete bulk feed or directory is unavailable, run the supported channels and label the result **a bounded discovery pass**. List the unsearched areas and data gaps. Do not substitute a handpicked watchlist for a verified whole-universe scan.
@@ -37,6 +37,10 @@ Keep these quantities separate: provider-reported matching count; rows actually 
 For each of the eight channels mark **executed**, **partial** or **unavailable**, with source, timestamp, tested scope, returned rows, useful leads and limitation. Web search results support the named issuers found; they do not establish all-market coverage. Separate database matches from human research choices.
 
 Do not infer missing analyst-consensus histories. Raised company guidance is not an analyst revision or a consensus beat unless the separate timestamped evidence exists. Distinguish publication date, financial period, observation date and retrieval date. Treat syndicated copies of the same release as one source family. Record discrepancies instead of averaging incompatible figures.
+
+Validate each quote field's actual observation date and session. A field named `close` can contain the prior session while `last_trade` reflects a newer regular session. Do not label that older field the latest completed-session close based on a tool description. If only a near-close trade is verified, label it a regular-session last-trade reference rather than an official closing price.
+
+Search material issuer events through the actual research cutoff, including after-hours, weekends and holidays after the price reference. A trial result, filing or other material announcement can invalidate the apparent price or option opportunity before the next session. Identify whether the quoted market has had a chance to incorporate the news; suspend a buy or precise overlay recommendation when the post-event price is unknown rather than carrying forward the pre-event conclusion.
 
 ## Run eight discovery channels
 
@@ -61,6 +65,8 @@ Create an auditable candidate ledger before narrowing. Retain ticker, verified i
 
 Take up to 20 unique issuers into initial review, up to eight into detailed underwriting and zero to five into the final buy/add/wait queue. In the 20-name research queue, target at least half outside the user's usual themes and at least five sectors. When the known focus is AI/semiconductors, count that breadth explicitly. If the queue is smaller, report both numerator and denominator. These are research targets, not purchase-allocation requirements. Show shortfalls and their reasons; never weaken ownership standards to fill slots.
 
+These workload limits are configurable defaults. Declare any research-budget override and its reason in the run record, and always report the work actually performed. If a pilot reviews 24 leads, record 24 with the pilot override; do not relabel, backfill or silently discard records to claim the default 20 was followed. Distinguish retrieved screen rows, initial reviews and detailed underwriting when applying the budget.
+
 Existing holdings are comparison candidates, not the source of the whole search. Keep unfamiliar-business discovery separate from following the supply chain of a familiar holding. Research priority and investment attractiveness are different: a turnaround may warrant investigation while remaining a wait.
 
 For a monthly review, or when explicitly requested, inspect ten eligible companies outside the usual screen results across sectors. Record the reproducible sampling method or selection rule, snapshot and omissions. This blind-spot audit must not be described as random or representative unless the selection method supports that claim.
@@ -78,7 +84,7 @@ Answer for each candidate:
 5. What would invalidate the business thesis or suspend further buying?
 6. Why should the next dollar go here rather than the strongest available existing holding, another finalist or waiting?
 
-Normalize GAAP and adjusted earnings, investment/disposal gains, dilution and cyclical economics. Quarterly earnings multiplied by four are a diagnostic, not a forward estimate. ARR, backlog and contracts are not recognized revenue or profit. Label management targets and researcher assumptions.
+Normalize GAAP and adjusted earnings, investment/disposal gains, dilution and cyclical economics. Verify each earnings denominator's exact fiscal dates and number of months: transition or spin-off guidance may cover a seven-month stub even when presented under a fiscal-year label. Do not calculate an annual P/E from stub-period EPS. Any annualization must be explicitly labeled as a diagnostic, justify its seasonal comparability and remain separate from actual annual guidance. Confirm current stock-split units, diluted share counts, ADR conversion ratios and currency compatibility across price and earnings. Quarterly earnings multiplied by four are a diagnostic, not a forward estimate. ARR, backlog and contracts are not recognized revenue or profit. Label management targets and researcher assumptions.
 
 Tie entry conditions to sourced valuation or verified price structure. An arbitrary desired discount is an entry preference, not support or fair value. Distinguish a temporary price invalidation from a business-thesis break. Do not invent technical indicators from missing histories or precise probabilities without a defensible model. Missing current essential evidence means research-only or wait, not a fabricated buy.
 
@@ -109,7 +115,7 @@ A completed run delivers findings, not another playbook. Use this report order:
 5. Rejected/deferred log and ownership-to-options handoff.
 6. What this run could not establish and which process defect, if any, should be corrected.
 
-Attach a compact machine-readable packet to the authorized private report or return it inline if no destination is available. Fields: `as_of`, `prompt_ref`, `run_mode` (`complete_for_declared_scope` or `bounded`), `ownership_horizon`, `tactical_horizon`, `universe` (source/date/scope/eligible_count/limitations), `channel_status`, `funnel_counts`, `breadth`, `candidate_ledger`, `finalists`, `rejected_candidates`, `options_handoffs`, `missing_inputs` and `next_review`. Within each source preserve `reported_match_count`, `rows_returned`, `rows_retrieved` and `unique_issuers_reviewed` separately when available. In the runtime, place this object under `scout` in the decision record.
+Attach a compact machine-readable packet to the authorized private report or return it inline if no destination is available. Fields: `as_of`, `prompt_ref`, `run_mode` (`complete_for_declared_scope` or `bounded`), `ownership_horizon`, `tactical_horizon`, `research_budget` (defaults/overrides/reasons/actual_counts), `universe` (source/date/scope/eligible_count/limitations), `channel_status`, `funnel_counts`, `breadth`, `candidate_ledger`, `finalists`, `rejected_candidates`, `options_handoffs`, `missing_inputs` and `next_review`. Within each source preserve `reported_match_count`, `rows_returned`, `rows_retrieved` and `unique_issuers_reviewed` separately when available. In the runtime, place this object under `scout` in the decision record.
 
 Preserve rejected and deferred candidates for forward evaluation. Track business predictions and 1-, 3-, 6- and 12-month stock total returns against appropriate sector and broad-market comparisons; measure option results separately. Include costs, failures and delistings in historical work, using information available at the decision date. One successful run, published anomaly or subsequent winner does not establish a durable advantage.
 

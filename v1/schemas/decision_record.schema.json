@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Trading OS Decision Record",
+  "type": "object",
+  "required": ["decision_id", "as_of", "request", "actions", "confidence", "missing_inputs"],
+  "properties": {
+    "decision_id": {"type": "string"},
+    "as_of": {"type": "string"},
+    "request": {"type": "string"},
+    "universe": {"type": "array", "items": {"type": "string"}},
+    "actions": {"type": "array"},
+    "market_posture": {"type": "string"},
+    "confidence": {"enum": ["low", "medium", "high"]},
+    "missing_inputs": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

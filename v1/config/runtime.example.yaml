@@ -1,0 +1,6 @@
+user:
+  timezone: America/Los_Angeles
+watchlist: []
+run:
+  request: What should I do today?
+  report_max_words: 2200

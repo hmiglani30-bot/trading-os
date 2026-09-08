@@ -1,0 +1,130 @@
+schema_version: 1
+
+principles:
+  - Skill files are canonical libraries, not mandatory sequential prompts.
+  - The adaptive planner selects capability IDs based on decision intent, state, and evidence gaps.
+  - A capability is added only when it can materially improve or change the decision.
+  - Shared market work runs once for multi-stock analysis.
+  - Portfolio ownership precedes options overlay.
+
+entry_points:
+  full_stock_analysis:
+    request: "Full stock analysis"
+    path: v1/workflows/full_stock_analysis.md
+    default_plan: full_stock_analysis
+    depth: deep
+  scout:
+    request: "Run Scout"
+    path: v1/skills/scout.md
+    default_plan: scout
+    portfolio_required: false
+    options_required: false
+
+skills:
+  market_regime:
+    path: v1/skills/market_regime.md
+    capabilities:
+      MARKET.REGIME: {section: "Establish the regime", triggers: [market_posture, capital_deployment, multi_stock_ranking, morning]}
+      MARKET.CHANGE: {section: "Identify what changed", triggers: [change_detection, morning, intraday]}
+      MARKET.TRANSMISSION: {section: "Build the transmission map", triggers: [single_stock_ownership, multi_stock_ranking, portfolio_review]}
+      MARKET.SENTIMENT: {section: "Evaluate sentiment and positioning", triggers: [crowding, narrative, event_reaction, momentum_conflict]}
+      MARKET.SCENARIOS: {section: "Construct scenarios", triggers: [high_uncertainty, major_macro_event, capital_deployment]}
+      MARKET.EVENTS: {section: "Build the event calendar", triggers: [morning, earnings_or_event_decision, covered_call_decision]}
+      MARKET.POSTURE: {section: "Produce a decision implication", triggers: [capital_deployment, morning, portfolio_review]}
+
+  fundamental_fair_value:
+    path: v1/skills/fundamental_fair_value.md
+    capabilities:
+      FUND.BUSINESS: {section: "Understand the business", triggers: [new_name, deep_dive]}
+      FUND.QUALITY: {section: "Assess business quality", triggers: [single_stock_ownership, multi_stock_ranking, scout_finalist]}
+      FUND.FINANCIALS: {section: "Reconstruct financial quality", triggers: [earnings, material_estimate_change, deep_dive]}
+      FUND.MANAGEMENT: {section: "Evaluate management and capital allocation", triggers: [management_change, capital_allocation_issue, deep_dive]}
+      FUND.INDUSTRY: {section: "Analyze competitive and industry structure", triggers: [industry_shift, new_competitor, deep_dive]}
+      FUND.EXPECTATIONS: {section: "Define the expectations gap", triggers: [single_stock_ownership, valuation_question, earnings]}
+      FUND.VALUATION: {section: "Triangulate valuation", triggers: [buy_add_wait_pass, fair_value_question, capital_deployment]}
+      FUND.SCENARIOS: {section: "Build bear, base, and bull cases", triggers: [capital_deployment, high_uncertainty, deep_dive]}
+      FUND.CATALYSTS: {section: "Distinguish thesis from catalyst", triggers: [earnings_or_event_decision, timing_conflict]}
+      FUND.STRATEGY: {section: "Evaluate strategy suitability", triggers: [ownership_decision, covered_call_decision]}
+
+  technical_entry_timing:
+    path: v1/skills/technical_entry_timing.md
+    capabilities:
+      TECH.TREND: {section: "Classify the multi-timeframe trend", triggers: [entry_timing, morning, covered_call_decision]}
+      TECH.LEVELS: {section: "Map important levels", triggers: [entry_timing, support_resistance, covered_call_decision]}
+      TECH.MOMENTUM: {section: "Evaluate momentum and participation", triggers: [breakout, reversal, overextension, comparison]}
+      TECH.ASYMMETRY: {section: "Diagnose extension and asymmetry", triggers: [buy_add_wait_pass, chase_risk]}
+      TECH.CONDITIONS: {section: "Create executable conditions", triggers: [entry_timing, capital_deployment]}
+      TECH.INTEGRATION: {section: "Integrate fundamentals and market regime", triggers: [conflicting_signals, ownership_decision]}
+      TECH.OPTIONS_CONTEXT: {section: "Hand off to portfolio and options", triggers: [covered_call_decision]}
+
+  portfolio_capital_allocation:
+    path: v1/skills/portfolio_capital_allocation.md
+    capabilities:
+      PORT.STATE: {section: "Validate portfolio state", triggers: [personalized_sizing, morning, portfolio_review]}
+      PORT.RISK: {section: "Identify existing risk clusters", triggers: [capital_deployment, add_position, morning]}
+      PORT.CASH: {section: "Establish a cash and risk posture", triggers: [capital_deployment, what_should_i_do_today]}
+      PORT.CANDIDATE: {section: "Evaluate each candidate independently", triggers: [single_stock_ownership, multi_stock_ranking]}
+      PORT.RANK: {section: "Rank incremental opportunities", triggers: [multi_stock_ranking, capital_deployment, opportunity_discovery]}
+      PORT.SIZE: {section: "Size under uncertainty", triggers: [personalized_sizing, capital_deployment]}
+      PORT.NO_ACTION: {section: "Make the no-action comparison", triggers: [all_action_decisions]}
+      PORT.SCOUT: {section: "Scout mode", triggers: [opportunity_discovery, vague_buy_question]}
+
+  scout:
+    path: v1/skills/scout.md
+    capabilities:
+      SCOUT.UNIVERSE: {section: "Establish the universe", triggers: [scout, opportunity_discovery, vague_buy_question]}
+      SCOUT.SOURCES: {section: "Validate sources and coverage", triggers: [scout, opportunity_discovery]}
+      SCOUT.DISCOVER: {section: "Run eight discovery channels", triggers: [scout, opportunity_discovery]}
+      SCOUT.TRIAGE: {section: "Triage and preserve breadth", triggers: [scout, multi_stock_ranking]}
+      SCOUT.UNDERWRITE: {section: "Underwrite finalists", triggers: [scout, scout_finalist]}
+      SCOUT.DECISION: {section: "Return the investment decision", triggers: [scout, capital_deployment]}
+      SCOUT.OPTIONS_HANDOFF: {section: "Hand off ownership to options", triggers: [scout, covered_call_decision]}
+      SCOUT.AUDIT: {section: "Audit and output contract", triggers: [scout, opportunity_discovery]}
+
+  options_covered_calls:
+    path: v1/skills/options_covered_calls.md
+    capabilities:
+      OPT.OWNERSHIP_GATE: {section: "Reconfirm the ownership decision", triggers: [covered_call_decision]}
+      OPT.CHAIN: {section: "Validate the option chain", triggers: [precise_strike_or_premium]}
+      OPT.MECHANICS: {section: "Calculate mechanics deterministically", triggers: [precise_strike_or_premium]}
+      OPT.COUNTERFACTUAL: {section: "Compare the counterfactuals", triggers: [covered_call_decision]}
+      OPT.STRIKE: {section: "Select duration and strike", triggers: [covered_call_decision]}
+      OPT.LOTS: {section: "Distribute across lots", triggers: [covered_call_decision, multiple_cost_bases, multiple_strikes]}
+      OPT.ROLL: {section: "Evaluate roll or close decisions", triggers: [existing_call, roll_question]}
+      OPT.REDTEAM: {section: "Red-team the recommendation", triggers: [covered_call_decision]}
+
+  learner:
+    path: v1/skills/learner.md
+    capabilities:
+      LEARN.PROCESS: {section: "Score process before outcome", triggers: [post_event_learning, scheduled_review]}
+      LEARN.OUTCOMES: {section: "Evaluate outcomes at defined horizons", triggers: [post_event_learning]}
+      LEARN.CALL_COUNTERFACTUAL: {section: "Use covered-call counterfactuals", triggers: [resolved_covered_call]}
+      LEARN.ATTRIBUTION: {section: "Attribute the root cause", triggers: [failure_analysis]}
+      LEARN.CHANGE_EVIDENCE: {section: "Decide whether change evidence is sufficient", triggers: [repeated_failure_pattern]}
+      LEARN.EDIT: {section: "Propose the smallest effective edit", triggers: [candidate_change]}
+      LEARN.EVAL: {section: "Evaluate the candidate", triggers: [candidate_change]}
+
+default_plans:
+  full_stock_analysis:
+    start_with: [MARKET.REGIME, MARKET.CHANGE, MARKET.TRANSMISSION, MARKET.SENTIMENT, MARKET.SCENARIOS, MARKET.EVENTS, MARKET.POSTURE, FUND.BUSINESS, FUND.QUALITY, FUND.FINANCIALS, FUND.MANAGEMENT, FUND.INDUSTRY, FUND.EXPECTATIONS, FUND.VALUATION, FUND.SCENARIOS, FUND.CATALYSTS, FUND.STRATEGY, TECH.TREND, TECH.LEVELS, TECH.MOMENTUM, TECH.ASYMMETRY, TECH.CONDITIONS, TECH.INTEGRATION, TECH.OPTIONS_CONTEXT]
+    always_check: [PORT.NO_ACTION]
+    add_if_needed: [PORT.STATE, PORT.RISK, PORT.SIZE, PORT.RANK, OPT.OWNERSHIP_GATE, OPT.CHAIN, OPT.MECHANICS, OPT.COUNTERFACTUAL, OPT.LOTS, OPT.ROLL, OPT.REDTEAM]
+    then: "Preserve specialist packets and coverage before synthesizing; full_stock_analysis.md owns the output contract."
+  scout:
+    start_with: [SCOUT.UNIVERSE, SCOUT.SOURCES, SCOUT.DISCOVER, SCOUT.TRIAGE, SCOUT.UNDERWRITE, SCOUT.DECISION, SCOUT.OPTIONS_HANDOFF, SCOUT.AUDIT]
+    then: "Apply relevant fundamental, technical and shared market capabilities to deep candidates; return actual ranked findings."
+    always_check: [PORT.NO_ACTION]
+    add_if_needed: [FUND.QUALITY, FUND.FINANCIALS, FUND.EXPECTATIONS, FUND.VALUATION, FUND.SCENARIOS, TECH.TREND, TECH.LEVELS, TECH.CONDITIONS, MARKET.REGIME, MARKET.EVENTS, PORT.STATE, PORT.RANK, PORT.SIZE, OPT.OWNERSHIP_GATE, OPT.CHAIN, OPT.LOTS, OPT.COUNTERFACTUAL]
+  what_should_i_do_today:
+    start_with: [PORT.STATE, MARKET.CHANGE, MARKET.REGIME, MARKET.EVENTS, PORT.RISK, PORT.CASH]
+    then: "rank material changes/opportunities and selectively add ticker-specific capabilities"
+    always_check: [PORT.NO_ACTION]
+  single_stock_buy_question:
+    start_with: [FUND.FINANCIALS, FUND.EXPECTATIONS, FUND.VALUATION, TECH.TREND, TECH.ASYMMETRY, PORT.CANDIDATE, PORT.NO_ACTION]
+    add_if_needed: [FUND.CATALYSTS, MARKET.TRANSMISSION, PORT.SIZE]
+  covered_call_question:
+    start_with: [PORT.STATE, OPT.OWNERSHIP_GATE, OPT.LOTS, TECH.LEVELS, TECH.OPTIONS_CONTEXT, MARKET.EVENTS, OPT.CHAIN, OPT.MECHANICS, OPT.COUNTERFACTUAL, OPT.STRIKE, OPT.REDTEAM]
+    add_if_needed: [FUND.VALUATION, FUND.CATALYSTS, OPT.ROLL]
+  capital_deployment:
+    start_with: [MARKET.REGIME, MARKET.POSTURE, PORT.STATE, PORT.RISK, FUND.FINANCIALS, FUND.VALUATION, TECH.ASYMMETRY, PORT.RANK, PORT.SIZE, PORT.NO_ACTION]
+    add_if_needed: [FUND.SCENARIOS, MARKET.SCENARIOS, PORT.SCOUT]

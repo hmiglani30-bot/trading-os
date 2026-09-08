@@ -1,0 +1,8 @@
+{
+  "active_ref": "candidate/trading-os-v1-adaptive-planner",
+  "entry_point": "START_HERE.md",
+  "full_stock_analysis": "v1/workflows/full_stock_analysis.md",
+  "repository": "hmiglani30-bot/trading-os",
+  "resolution_policy": "Read this file from the repository default branch; resolve active_ref to one commit per run; read every methodology file at that commit.",
+  "schema_version": 1
+}

@@ -15,7 +15,7 @@ Scout is independently runnable and owns its discovery rules. Portfolio allocati
 
 ## One command
 
-Use **@full-stock-analysis CBRS**, followed by any optional instructions. The installed ChatGPT skill resolves the current GitHub source on every run and executes [Full Stock Analysis](v1/workflows/full_stock_analysis.md). Text aliases /full-stock-analysis and /full stock analysis are also understood; they are not platform slash-command registrations.
+Use **/full-stock-analysis CBRS**, followed by optional instructions, with GitHub selected and this repository in conversation context. Execute [Full Stock Analysis](v1/workflows/full_stock_analysis.md). Once installed, the personal **@full-stock-analysis** skill supplies the repository automatically across chats and resolves its current source every run. The slash spellings are conversational aliases, not platform slash-command registrations. A skill source file in GitHub is not evidence of installation in ChatGPT.
 
 This selects deep market/sentiment, fundamental and technical work with preserved specialist packets, then adds portfolio and options work when relevant. Ordinary adaptive requests remain selective. See the workflow for source resolution, horizons, coverage, output records and frozen replay rules.
 

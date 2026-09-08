@@ -6,7 +6,7 @@ This repository is the methodological source, not a destination for private acco
 
 The default branch's `TRADING_OS_CURRENT.json` is the stable discovery entry point. Resolve its active ref to one commit at run start and use that commit consistently. Do not ask the user to repeat a branch or choose files. A saved SHA reproduces a past run; it does not define the latest run.
 
-`@full-stock-analysis TICKER [optional instructions]` runs the full workflow named in that pointer. Plain text `/full-stock-analysis` and `/full stock analysis` are aliases interpreted by the installed skill, not registered platform slash commands.
+In a conversation with this repository in context, `/full-stock-analysis TICKER [optional instructions]` or `/full stock analysis` requests the workflow named in the pointer. The personal `@full-stock-analysis` skill provides the same entry point across chats once installed. These slash spellings are conversational aliases, not platform slash-command registrations. Never infer personal-skill installation from a source file in GitHub.
 
 ## Changes and verification
 

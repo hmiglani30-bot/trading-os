@@ -1,6 +1,6 @@
 # Trading OS
 
-Use **@full-stock-analysis CBRS** plus optional instructions for the combined stock workflow.
+Use **/full-stock-analysis CBRS** plus optional instructions in a conversation that has this repository in context and GitHub selected. Once the personal Full Stock Analysis skill is installed, **@full-stock-analysis CBRS** is the persistent entry point across chats. A repository file alone does not install a ChatGPT skill.
 
 Read [TRADING_OS_CURRENT.json](TRADING_OS_CURRENT.json) from the repository's default branch to discover the current canonical source automatically. Resolve its active ref to one commit per run, then load [START_HERE.md](START_HERE.md) and the workflow named by the pointer. No branch selection is required from the user.
 

@@ -73,3 +73,7 @@ Return as_of/portfolio_cutoff/input_quality/capital_available/risk_posture/portf
 ## Failure conditions
 
 Do not force full deployment; infer account values; rank companies without current price; count correlated tickers as diversification; use one score instead of reasoning; recommend calls before desired ownership; provide exact sizes from stale data; hide wait/pass; or optimize premium at the expense of the portfolio thesis.
+
+## Preservation in a full run
+
+In full stock analysis, preserve the incremental comparison and ownership-to-options handoff, with current commitments and retained shares reconciled. Respect the user's requested scope and presentation preferences; missing cash or adjusted lots must not silently become inferred facts. Follow [Full Stock Analysis](../workflows/full_stock_analysis.md) for the shared coverage and saved-record contract.

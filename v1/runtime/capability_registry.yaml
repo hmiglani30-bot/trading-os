@@ -8,6 +8,11 @@ principles:
   - Portfolio ownership precedes options overlay.
 
 entry_points:
+  full_stock_analysis:
+    request: "Full stock analysis"
+    path: v1/workflows/full_stock_analysis.md
+    default_plan: full_stock_analysis
+    depth: deep
   scout:
     request: "Run Scout"
     path: v1/skills/scout.md
@@ -100,6 +105,11 @@ skills:
       LEARN.EVAL: {section: "Evaluate the candidate", triggers: [candidate_change]}
 
 default_plans:
+  full_stock_analysis:
+    start_with: [MARKET.REGIME, MARKET.CHANGE, MARKET.TRANSMISSION, MARKET.SENTIMENT, MARKET.SCENARIOS, MARKET.EVENTS, MARKET.POSTURE, FUND.BUSINESS, FUND.QUALITY, FUND.FINANCIALS, FUND.MANAGEMENT, FUND.INDUSTRY, FUND.EXPECTATIONS, FUND.VALUATION, FUND.SCENARIOS, FUND.CATALYSTS, FUND.STRATEGY, TECH.TREND, TECH.LEVELS, TECH.MOMENTUM, TECH.ASYMMETRY, TECH.CONDITIONS, TECH.INTEGRATION, TECH.OPTIONS_CONTEXT]
+    always_check: [PORT.NO_ACTION]
+    add_if_needed: [PORT.STATE, PORT.RISK, PORT.SIZE, PORT.RANK, OPT.OWNERSHIP_GATE, OPT.CHAIN, OPT.MECHANICS, OPT.COUNTERFACTUAL, OPT.LOTS, OPT.ROLL, OPT.REDTEAM]
+    then: "Preserve specialist packets and coverage before synthesizing; full_stock_analysis.md owns the output contract."
   scout:
     start_with: [SCOUT.UNIVERSE, SCOUT.SOURCES, SCOUT.DISCOVER, SCOUT.TRIAGE, SCOUT.UNDERWRITE, SCOUT.DECISION, SCOUT.OPTIONS_HANDOFF, SCOUT.AUDIT]
     then: "Apply relevant fundamental, technical and shared market capabilities to deep candidates; return actual ranked findings."

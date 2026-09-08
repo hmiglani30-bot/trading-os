@@ -1,6 +1,6 @@
 # Trading OS — start here
 
-This is the single source for the six core decision prompts. Use the existing branch `candidate/trading-os-v1-adaptive-planner`. Its `v1/skills/` files are canonical; the legacy P00–P12 files are historical comparison material.
+This is the single source for the six core decision prompts. Discover the current source through `TRADING_OS_CURRENT.json` on this repository's default branch. Resolve its active ref once to a commit and read the canonical files at that commit; the user never needs to supply a branch. Legacy P00–P12 files are historical comparison material.
 
 | Core prompt | Canonical path |
 |---|---|
@@ -12,6 +12,12 @@ This is the single source for the six core decision prompts. Use the existing br
 | **Scout: stock discovery and shortlisting** | **[scout.md](v1/skills/scout.md)** |
 
 Scout is independently runnable and owns its discovery rules. Portfolio allocation consumes its findings; legacy `PORT.SCOUT` requests hand off to the same Scout file. Sentiment belongs in market analysis. The [adaptive planner](v1/runtime/adaptive_planner.md) routes the work; the [learner](v1/skills/learner.md) evaluates the process.
+
+## One command
+
+Use **@full-stock-analysis CBRS**, followed by any optional instructions. The installed ChatGPT skill resolves the current GitHub source on every run and executes [Full Stock Analysis](v1/workflows/full_stock_analysis.md). Text aliases /full-stock-analysis and /full stock analysis are also understood; they are not platform slash-command registrations.
+
+This selects deep market/sentiment, fundamental and technical work with preserved specialist packets, then adds portfolio and options work when relevant. Ordinary adaptive requests remain selective. See the workflow for source resolution, horizons, coverage, output records and frozen replay rules.
 
 ## The result to deliver
 

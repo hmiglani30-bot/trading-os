@@ -91,3 +91,7 @@ Return ticker/as_of/current_price/research_cutoff, business_quality, financial_q
 ## Failure conditions
 
 Do not equate revenue growth with value creation; ignore dilution/debt/capital intensity; use trailing multiples alone for rapidly changing businesses; use undated forward estimates; call a stock cheap because it fell or expensive because it rose; treat management claims as proof; assign precise fair value from weak inputs; recommend buying solely because the business is excellent; or omit priced expectations.
+
+## Preservation in a full run
+
+In full stock analysis, a high multiple alone is not a completed valuation handoff. Preserve a supported valuation/reverse-valuation sensitivity connecting growth, margins, capital and share count to price, or explicit missing inputs and defensible break-even conditions. Keep ownership quality, valuation attractiveness and confidence separate. Follow [Full Stock Analysis](../workflows/full_stock_analysis.md) for the shared coverage and saved-record contract.

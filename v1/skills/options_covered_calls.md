@@ -67,3 +67,7 @@ Return ticker/as_of/position_cutoff/chain_cutoff, ownership shares total/to reta
 ## Failure conditions
 
 Do not optimize premium before ownership; call away core shares without explicit rationale; use stale quotes; ignore spread/OI/earnings/ex-div; treat annualized weekly premium as expected annual return; ignore upside surrendered; recommend more contracts than shares; treat rolls as costless; or judge strategy only by premium collected.
+
+## Preservation in a full run
+
+In full stock analysis involving existing calls, preserve a numerical keep-versus-close comparison from the same current starting mark, share count and terminal date, in addition to any historical realized-profit calculation. Preserve no-call and partial/higher-strike alternatives where applicable. Follow [Full Stock Analysis](../workflows/full_stock_analysis.md) for the shared coverage and saved-record contract.

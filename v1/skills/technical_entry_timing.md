@@ -61,3 +61,7 @@ Return ticker/as_of/data_cutoff/timeframes/input_quality, multi-timeframe trend,
 ## Failure conditions
 
 Do not hallucinate chart values/indicators; call a level precise from weak evidence; use technical strength as proof of fair value; ignore earnings/event gaps; recommend chasing solely on momentum; claim an intraday view from EOD data; or bury `no edge` when that is the honest conclusion.
+
+## Preservation in a full run
+
+In full stock analysis, define the bar interval and observable confirmation behind terms such as held or sustained. Pair each actionable scenario with entry/observation, invalidation, first resistance/target and supported asymmetry; preserve these fields through synthesis. Follow [Full Stock Analysis](../workflows/full_stock_analysis.md) for the shared coverage and saved-record contract.

@@ -65,3 +65,7 @@ Return fields for as_of, cutoff, mode, regime_label, confidence, growth, inflati
 ## Failure conditions
 
 Do not repeat macro analysis for every ticker; treat price movement as proof of cause; report old data as current; convert social sentiment into fundamental evidence; bury the decision implication; assign unsupported precise probabilities; or claim certainty around geopolitical/policy outcomes.
+
+## Preservation in a full run
+
+In full stock analysis, preserve the native packet and a compact observed change → possible mechanism → company effect → disconfirming evidence map. Missing positioning, revision or rates data must restrict the corresponding claims rather than disappear during synthesis. Follow [Full Stock Analysis](../workflows/full_stock_analysis.md) for the shared coverage and saved-record contract.

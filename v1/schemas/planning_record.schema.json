@@ -2,15 +2,57 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Trading OS Planning Record",
   "type": "object",
-  "required": ["decision_intents", "selected_capabilities", "depth", "missing_inputs", "reasoning_summary"],
+  "required": [
+    "decision_intents",
+    "selected_capabilities",
+    "depth",
+    "missing_inputs",
+    "reasoning_summary",
+    "omitted_capabilities_checked",
+    "capabilities_added_after_coverage_audit"
+  ],
   "properties": {
-    "decision_intents": {"type": "array", "items": {"type": "string"}},
-    "selected_capabilities": {"type": "array", "items": {"type": "string"}},
-    "omitted_capabilities_checked": {"type": "array", "items": {"type": "string"}},
-    "capabilities_added_after_coverage_audit": {"type": "array", "items": {"type": "string"}},
-    "depth": {"enum": ["scan", "standard", "deep", "audit"]},
-    "missing_inputs": {"type": "array", "items": {"type": "string"}},
-    "reasoning_summary": {"type": "string"}
+    "decision_intents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "selected_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "omitted_capabilities_checked": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capabilities_added_after_coverage_audit": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "depth": {
+      "enum": [
+        "scan",
+        "standard",
+        "deep",
+        "audit"
+      ]
+    },
+    "missing_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reasoning_summary": {
+      "type": "string"
+    }
   },
   "additionalProperties": true
 }

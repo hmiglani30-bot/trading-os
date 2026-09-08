@@ -6,6 +6,7 @@ import json
 import os
 import re
 import shutil
+import sys
 import uuid
 from datetime import datetime
 from pathlib import Path
@@ -13,6 +14,9 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 import yaml
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from full_analysis import (RESEARCH_START, RESEARCH_END, research_output_instruction,
+                           source_manifest, validate_full_analysis)
 try:
     import markdown
 except ImportError:
@@ -41,9 +45,11 @@ SKILL_FILES = [
 
 def resolve_workflow(request: str, workflow: str | None = None) -> str:
     if workflow is not None:
-        if workflow not in {"adaptive", "scout"}:
+        if workflow not in {"adaptive", "scout", "full_stock_analysis"}:
             raise ValueError(f"Unknown workflow: {workflow}")
         return workflow
+    if re.match(r"^\s*(?:use\s+|run\s+)?(?:[@$/]\s*)?full(?:[-\s]+)stock(?:[-\s]+)analysis\b", request, re.I):
+        return "full_stock_analysis"
     return "scout" if re.match(r"^\s*(?:run\s+)?scout\b", request, re.I) else "adaptive"
 
 
@@ -109,6 +115,16 @@ def build_prompt(root: Path, config: dict[str, Any], request: str, portfolio: An
         "the scout key in the decision record."
         if workflow == "scout" else "Use the adaptive planner to select the decision workflow."
     )
+    full_mode = workflow == "full_stock_analysis"
+    full_workflow = (root / "workflows/full_stock_analysis.md").read_text() if full_mode else ""
+    research_contract = research_output_instruction(root) if full_mode else ""
+    budget_instruction = (
+        "Keep the decision brief concise; preserve complete specialist appendices and records. "
+        "There is no report-wide word ceiling in full mode unless the user explicitly supplies one."
+        if full_mode else f"Normal report ceiling: {max_words} words unless deeper detail is necessary to support a high-stakes decision."
+    )
+    if full_mode:
+        workflow_instruction = "Run Full Stock Analysis in deep depth. Complete the three core specialist stages; add other libraries where relevant."
     return f"""
 You are executing Trading OS v1 for a real investment-research decision.
 
@@ -120,7 +136,7 @@ USER / RUN CONTEXT
 - {workflow_instruction}
 - Timezone: {config.get('user', {}).get('timezone', 'America/Los_Angeles')}
 - Watchlist: {json.dumps(watchlist)}
-- Normal report ceiling: {max_words} words unless deeper detail is necessary to support a high-stakes decision.
+- {budget_instruction}
 
 PRIVATE PORTFOLIO INPUT
 {json.dumps(redact(portfolio), indent=2) if portfolio is not None else 'UNAVAILABLE'}
@@ -138,8 +154,8 @@ PREVIOUS REPORT
 {previous if previous else 'UNAVAILABLE'}
 
 INSTRUCTIONS
-1. Use the adaptive planner. Do not mechanically run every skill as a full essay.
-2. First choose the minimum-sufficient capability IDs from the registry, then research current evidence using web search.
+1. Follow the selected workflow. Full Stock Analysis requires all three core specialist stages; other workflows remain adaptive.
+2. Record capability IDs and depth before research. In full mode select all core IDs; otherwise select the minimum-sufficient plan.
 3. Perform the planner's decision-flip coverage audit and add omitted capabilities only if they could materially alter the recommendation.
 4. For changing public facts, use current web search and cite sources in the displayed Markdown.
 5. Prefer official/primary sources for filings, earnings, macro releases, dates, and company disclosures.
@@ -150,7 +166,7 @@ INSTRUCTIONS
 10. Produce ONE decision-first report, not stitched prompt outputs.
 11. Keep internal chain-of-thought private. The planning record must contain only a brief user-safe rationale for capability selection.
 
-At the end, include exactly three machine-readable blocks:
+At the end, include the following three blocks, plus the research block when full mode requires it:
 
 {PLANNING_START}
 ```json
@@ -185,6 +201,12 @@ At the end, include exactly three machine-readable blocks:
 A spoken summary of at most 90 words: what matters now, top action(s), and critical warning(s).
 {VOICE_END}
 
+{research_contract}
+
+<FULL_STOCK_ANALYSIS>
+{full_workflow}
+</FULL_STOCK_ANALYSIS>
+
 <ADAPTIVE_PLANNER>
 {planner}
 </ADAPTIVE_PLANNER>
@@ -202,6 +224,10 @@ def synthetic_report(now: datetime, workflow: str = "adaptive", request: str = "
         capabilities = ["SCOUT.UNIVERSE", "SCOUT.SOURCES", "SCOUT.DISCOVER", "SCOUT.TRIAGE", "SCOUT.UNDERWRITE", "SCOUT.DECISION", "SCOUT.OPTIONS_HANDOFF", "SCOUT.AUDIT", "PORT.NO_ACTION"]
         intent = "opportunity_discovery"
         mode_note = "Standalone Scout routing is selected. This demo verifies artifacts only; zero stocks were screened or recommended."
+    elif workflow == "full_stock_analysis":
+        capabilities = []
+        intent = "full_stock_analysis"
+        mode_note = "Full Stock Analysis routing selected. Demo only: no specialist research was completed."
     else:
         capabilities = ["MARKET.CHANGE", "PORT.STATE", "PORT.NO_ACTION"]
         intent = "demo"
@@ -247,7 +273,7 @@ def main() -> int:
     parser.add_argument("--scout-evidence-file", type=Path, help="Dated JSON source records or exported scan rows; optional for Scout")
     parser.add_argument("--previous-report", type=Path)
     parser.add_argument("--request", default="")
-    parser.add_argument("--workflow", choices=["adaptive", "scout"], help="Select Scout directly; 'Run Scout' also routes to Scout")
+    parser.add_argument("--workflow", choices=["adaptive", "scout", "full_stock_analysis"], help="Select a workflow; full-stock-analysis and Run Scout also route by request text")
     parser.add_argument("--output-root", type=Path, default=Path("runs"))
     parser.add_argument("--model", default="gpt-5.6")
     parser.add_argument("--reasoning-effort", default="high")
@@ -257,7 +283,7 @@ def main() -> int:
     root = args.root.resolve()
     config = yaml.safe_load(args.config.read_text(encoding="utf-8")) if args.config and args.config.exists() else {}
     configured_workflow = args.workflow or config.get("run", {}).get("workflow")
-    request = args.request or config.get("run", {}).get("request") or ("Run Scout" if configured_workflow == "scout" else "What should I do today?")
+    request = args.request or config.get("run", {}).get("request") or ("Run Scout" if configured_workflow == "scout" else "Full stock analysis" if configured_workflow == "full_stock_analysis" else "What should I do today?")
     workflow = resolve_workflow(request, configured_workflow)
     tz_name = config.get("user", {}).get("timezone", "America/Los_Angeles")
     now = datetime.now(ZoneInfo(tz_name))
@@ -291,10 +317,23 @@ def main() -> int:
     displayed, planning_body = extract_block(raw, PLANNING_START, PLANNING_END)
     displayed, decision_body = extract_block(displayed, DECISION_START, DECISION_END)
     displayed, voice_body = extract_block(displayed, VOICE_START, VOICE_END)
+    displayed, research_body = extract_block(displayed, RESEARCH_START, RESEARCH_END)
 
     planning = json.loads(planning_body) if planning_body else {"missing": True}
     decision = json.loads(decision_body) if decision_body else {"missing": True}
     voice = voice_body or "Trading OS report is ready."
+    try:
+        research = json.loads(research_body) if research_body else {}
+    except json.JSONDecodeError:
+        research = {}
+    validation = (
+        {"status": "demo", "errors": [], "limitations": ["No research performed"]}
+        if args.demo else validate_full_analysis(root, planning, research)
+        if workflow == "full_stock_analysis" else
+        {"status": "not_checked", "errors": [], "limitations": ["Full-analysis contract not selected"]}
+    )
+    if validation["status"] in {"invalid", "partial"}:
+        displayed = "**Research status: " + validation["status"] + ". See validation_record.json for gaps.**\n\n" + displayed
 
     run_id = now.strftime("%Y-%m-%dT%H%M%S") + "-" + uuid.uuid4().hex[:8]
     out_root = args.output_root.resolve()
@@ -307,7 +346,11 @@ def main() -> int:
     (run_dir / "planning_record.json").write_text(json.dumps(planning, indent=2), encoding="utf-8")
     (run_dir / "decision_record.json").write_text(json.dumps(decision, indent=2), encoding="utf-8")
     (run_dir / "voice_summary.txt").write_text(voice.strip() + "\n", encoding="utf-8")
+    (run_dir / "research_record.json").write_text(json.dumps(research, indent=2), encoding="utf-8")
+    (run_dir / "validation_record.json").write_text(json.dumps(validation, indent=2), encoding="utf-8")
     manifest = {
+        "source": source_manifest(root),
+        "validation_status": validation["status"],
         "run_id": run_id,
         "created_at": now.isoformat(),
         "model": args.model,
@@ -327,7 +370,7 @@ def main() -> int:
         shutil.rmtree(latest)
     shutil.copytree(run_dir, latest)
     print(str(run_dir))
-    return 0
+    return 2 if validation["status"] == "invalid" else 0
 
 
 if __name__ == "__main__":

@@ -36,3 +36,11 @@ The Scout default plan runs discovery through ranked decisions. It reports each 
 For vague questions such as “What should I do today?”, the planner proactively checks portfolio state, shared market regime, material changes, events, opportunities, and risks, then deep-dives only the names or decisions that can matter today.
 
 Legacy P00–P12 remain unchanged while v1 is evaluated. They are not the active v1 interface and should not be deleted until migration coverage is proven.
+
+## Full stock analysis
+
+Use @full-stock-analysis with a ticker and optional instructions in ChatGPT. The installed skill reads the default branch's TRADING_OS_CURRENT.json, resolves its active ref once and loads the workflow at that commit. This is deep specialist coverage with an integrated brief and preserved appendices, not a report-wide length limit.
+
+The standalone runner supports --workflow full_stock_analysis and recognizes the full-stock-analysis text aliases. It requires a checkout of the resolved source and retains its existing API-key and supplied-private-data limitations. Its run manifest records the actual local commit/dirty state and file hashes; it does not claim that an arbitrary local checkout is the latest.
+
+Full-mode output includes research_record.json and validation_record.json. Structural checks reject missing core stages, missing required native packet fields, incomplete planning records, dangling sources/findings, and claims of coverage with no supporting finding. Partial research remains labeled; a demo is not a completed research run.

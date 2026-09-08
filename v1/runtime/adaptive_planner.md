@@ -28,6 +28,12 @@ A run may use:
 
 Do not run a full 2,000-word fundamental analysis merely because the user mentioned a ticker. Do not omit a portfolio or event-risk check merely because the user failed to ask for it.
 
+## Explicit full stock analysis
+
+The command **@full-stock-analysis** and its documented text aliases select [Full Stock Analysis](../workflows/full_stock_analysis.md) with deep depth. Complete every applicable core market, fundamental and technical requirement; preserve the specialist findings and machine-readable packets. This explicit request takes precedence over minimum-sufficient pruning of those three groups. Conditional input gaps remain labeled and do not authorize fabricated data.
+
+Before research, persist depth and selected capability IDs. Before synthesis, preserve the actual omitted-capability audit, added IDs, requirement coverage and specialist records. A file hash proves which source was loaded, not that its analysis was completed. The full workflow owns the common output contract; avoid copying it into every library.
+
 ## Planner loop
 
 ```text

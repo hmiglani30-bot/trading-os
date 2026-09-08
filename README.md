@@ -1,6 +1,8 @@
 # Trading OS
 
-Use [START_HERE.md](START_HERE.md) for the six canonical decision prompts, how to run them, and the expected investment decisions.
+Use **@full-stock-analysis CBRS** plus optional instructions for the combined stock workflow.
+
+Read [TRADING_OS_CURRENT.json](TRADING_OS_CURRENT.json) from the repository's default branch to discover the current canonical source automatically. Resolve its active ref to one commit per run, then load [START_HERE.md](START_HERE.md) and the workflow named by the pointer. No branch selection is required from the user.
 
 **Run Scout:** use [scout.md](v1/skills/scout.md) directly, or say “Run Scout” to the adaptive planner. Scout is an independent stock-discovery and shortlisting prompt, alongside Fundamental Analysis. It returns actual ranked findings with honest search coverage.
 
